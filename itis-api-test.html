@@ -1,0 +1,84 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Api Stack Overflow</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+
+    <script type="text/javascript">
+$(document).ready(function() {
+  /*function to sanitize the JSON if it is necesary*/
+  function sanitizeJSON(unsanitized) {
+    var str = JSON.stringify(unsanitized);
+    var output = str
+      .replace(/\\/g, "\\\\")
+      .replace(/\n/g, "\\n")
+      .replace(/\r/g, "\\r")
+      .replace(/\t/g, "\\t")
+      .replace(/\f/g, "\\f")
+      .replace(/"/g, '\\"')
+      .replace(/'/g, "\\'")
+      .replace(/\&/g, "\\&");
+    return output;
+  }
+
+  /*
+            JSONP, which stands for "JSON with Padding" (and JSON stands for JavaScript Object Notation), is a way to get data from another domain that bypasses CORS (Cross Origin Resource Sharing) rules. CORS is a set of "rules," about transferring data between sites that have a different domain name from the client.
+            We would like to see if we can get a valid JSON result which we can parse in using AJAX
+            */
+
+  /* Update all the parameters for your API test*/
+  const urlBase = "http://www.itis.gov/ITISWebService/jsonservice/ITISService/";
+  const urlSearchReq = "searchByCommonName";
+  const commonName = "srchKey=robin";
+  const urlReq = urlBase + urlSearchReq + "?" + commonName;
+  console.log("urlReq");
+  console.log(urlReq);
+
+  function poop(data) {
+    console.log("hioio");
+  }
+  console.log("callback ha ha ha");
+
+  var settings = {
+    async: true,
+    crossDomain: true,
+    url: urlReq,
+    data: { srchKey: "robin" },
+    dataType: "jsonp",
+    jsonp: "itis_data",
+    type: "GET"
+  }
+console.log("settings");
+  // var result = $.ajax(settings)
+  var result = $.ajax({
+    async: true,
+    crossDomain: true,
+    url: urlReq + "&json=poop",
+    data: { srchKey: "robin" },
+    // dataType: "json",
+    jsonp: "itis_data",
+    type: "GET"
+  })
+    .done(function(result) {
+      // url: "",
+      // data: settings,
+      // dataType: "json",
+      // type: "Get"
+      console.log(result);
+    })
+    .fail(function(jqXHR, error, errorThrown) {
+      console.log(jqXHR);
+      console.log(error);
+      console.log(errorThrown);
+    });
+});
+</script>
+
+</head>
+
+<body>
+    <p>There is nothing to see here. Please check your console log instead</p>
+</body>
+
+</html>
