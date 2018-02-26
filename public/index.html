@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="bird identification, bird watching, bird sightings, bird log" name="keywords" />
+    <meta content="Bird Log: A place to track your bird sightings and verify identification by description and image." name="description" />
+    <meta name="robots" />
+    <meta content="Margaret Blauvelt" name="author" />
+    <title>Bird Watcher's Bird Log</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond|Ubuntu" rel="stylesheet" />
+    <link href="styles/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <header role="banner">
+      <a id="banner-img"><img /></a>
+      <h1>Bird Watcher's Bird Logger</h1>
+      <h2></h2>
+      <nav role="navigation" id="navi-h"><a>Home</a><a>About</a><a>Contact</a></nav>
+    </header>
+    <main role="main">
+      <section class="enter-data">
+        <form action="#" name="writing" method="get" class="enter-data">
+          <fieldset class="bird-names">
+            <p>Enter bird's common or scientific name below:</p>
+            <label for="common-name">Common Name:</label>
+            <input type="text" id="common-name" name="common-name" accesskey="n" />
+            <label for="scientific-name">Scientific Name:</label>
+            <input type="text" id="scientific-name" name="common-name" accesskey="s" />
+            <button type="button" name="read-description" value="Read Description" accesskey="r" class="ctr">Read Description</button>
+            <label for="date-sighted">Date Sighted:</label>
+            <input type="text" id="date-sighted" name="date-sighted" accesskey="d" />
+            <label for="time-sighted">Time:</label>
+            <input type="text" id="time-sighted" name="time-sighted" accesskey="t" />
+            <label for="where-sighted">Where:</label>
+            <input type="text" id="where-sighted" name="where-sighted" accesskey="w" />
+            <label for="comments">Comments:</label>
+            <input type="text" id="comments" name="comments" accesskey="c" />
+          </fieldset>
+        </form>
+      </section>
+    </main>
+    <footer role="contentinfo"><address></address>
+      <summary>© 2017 Margaret Blauvelt</summary>
+    </footer>
+  </body>
+</html>

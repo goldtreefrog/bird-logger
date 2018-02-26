@@ -1,8 +1,14 @@
 # Ignore node_modules
 node_modules
 
+# Ignore personal notes
 /notes
 
+# Ignore old files I won't want soon
 /trash
 
+# Ignore drafts that are not ready for github
 /wireFrames
+
+# Ignore map related to sass to css conversion
+public/styles/style.css.map
