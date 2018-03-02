@@ -5,9 +5,11 @@ h3 {
   font-family: "Ubuntu", sans-serif; }
 
 button {
-  background-color: green;
-  border: 2px solid #000000;
-  padding: 5px; }
+  color: white;
+  background-color: #9a2103;
+  border: 1px solid #3c0c01;
+  padding: 5px;
+  font-weight: 700; }
 
 label {
   clear: left;
@@ -15,10 +17,12 @@ label {
   width: 20%; }
 
 input {
+  clear: right;
   float: left;
   width: 79%; }
 
 button.ctr {
+  display: block;
   margin-left: auto;
   margin-right: auto;
   border: 5px sold purple; }
