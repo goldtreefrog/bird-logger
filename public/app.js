@@ -4,28 +4,20 @@ function handleClicks() {
   $("#js-common-name").on("focusout", function(e) {
     e.preventDefault();
     let commonName = $("#js-common-name").val();
-    // console.log("common name entered:" + commonName);
     if (commonName.length > 1) {
       const ApiLookupResult = lookupScientificNames(commonName);
-      console.log("ApiLookupResult");
-      console.log(ApiLookupResult);
     }
   });
 }
 
 function lookupScientificNames(commonName) {
   console.log(`Look up scientific name for "${commonName}"`);
-  const settings = {
-    // url: "https://www.itis.gov/ITISWebService/jsonservice/searchByCommonName?srchKey=american%20robin"
-  };
-  // var result = $.ajax(settings);
+  const settings = {};
   var result = $.getJSON("https://www.itis.gov/ITISWebService/jsonservice/searchByCommonName?srchKey=" + commonName, settings, parseTSNs);
   return result;
 }
 
 function parseTSNs(data) {
-  // console.log("data");
-  // console.log(data);
   if (data.commonNames.length === 1 && !data.commonNames[0]) {
     console.log(`No matching common names were found.`);
     return;
@@ -34,10 +26,7 @@ function parseTSNs(data) {
   const namesTsns = [];
   console.log("Common names matching input:");
   for (let i = 0; i < data.commonNames.length; i++) {
-    // console.log(data.commonNames[i].commonName);
-    // console.log(data.commonNames[i].tsn);
     namesTsns.push({ name: data.commonNames[i].commonName, tsn: data.commonNames[i].tsn });
-    // console.log(namesTsns[i]);
   }
 
   console.log(`Number of entries returned: ${data.commonNames.length}`);
@@ -48,23 +37,36 @@ function parseTSNs(data) {
     tsns.push(dataValue.tsn);
   });
   console.log(tsns);
-  const birdScientificNames = findBirdScientificNameFromTsn(tsns);
+  const birdScientificNames = findScientificNameFromTsn(tsns);
   $("#js-scientific-name").val("Scientific name goes here");
   return;
 }
 
-function findBirdScientificNameFromTsn(tsns) {
+function findScientificNameFromTsn(tsns) {
   // https://www.itis.gov/ITISWebService/jsonservice/getScientificNameFromTSN?tsn=179759 // Robin
-  let tsn = 179759; // Test with Robin
-  const settings = {};
-  console.log("Limit to bird names");
-  var result = $.getJSON("https://www.itis.gov/ITISWebService/jsonservice/getScientificNameFromTSN?tsn=" + tsn, settings, parseScientificNames);
-  return result;
-}
+  const animals = [];
+  for (let i = 0; i < tsns.length; i++) {
+    // for (let i = 0; i < 1; i++) {
+    const res = getOrganism(tsns[i]);
+  }
 
-function parseScientificNames(data) {
-  console.log("Parse scientific names");
-  console.log(data);
+  function getOrganism(tsn) {
+    // let tsn = 179759; // Test with Robin
+    const settings = {};
+    var result = $.getJSON("https://www.itis.gov/ITISWebService/jsonservice/getScientificNameFromTSN?tsn=" + tsn, settings, parseScientificNames);
+    return result;
+  }
+
+  function parseScientificNames(data) {
+    const sciNamesTsns = [];
+    console.log("parseScientificNames");
+    // console.log(data);
+    if (data.kingdom.toLowerCase() === "animalia") {
+      animals.push({ kingdom: data.kingdom, tsn: data.tsn, scientificName: data.combinedName });
+      return;
+    }
+  }
+  console.log(animals);
 }
 
 $(document).ready(function() {
