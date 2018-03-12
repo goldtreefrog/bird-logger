@@ -7,43 +7,43 @@ function getDataFromApi(baseUrl, searchTerm, callback) {
     type: "GET",
     success: callback
   };
-
+  console.log(baseUrl + searchTerm);
   $.ajax(settings);
 }
 
 /**
  * Look up similar common names and Taxonomic Serial Numbers (TSNs) at ITIS from common name input by user
- * @method lookupScientificNames
+ * @method lookupSimilarNamesAndTsns
  * @param {string} commonName - Common name for bird
  * @return result
  */
-function lookupScientificNames(commonName) {
-  console.log(`Look up scientific name for "${commonName}"`);
-  getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/searchByCommonName?srchKey=", commonName, parseTSNs);
+function lookupSimilarNamesAndTsns(commonName) {
+  console.log(`Look up similar names for "${commonName}"`);
+  // Note: Similar names may point to the SAME or DIFFERENT TSNs. For example, catbird will result in gray catbird and grey catbird, two different spellings (and for some birds, two different common names) for the exact same bird. We want to give the user all the common names but only process the TSN once to see if it is actually a bird.
+  getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/searchByCommonName?srchKey=", commonName, organizeCommonNamesAndTsns);
 }
 
 /**
- * Parse the JSON and store similar common names and TSNs in "namesTsns" array
- * @method parseTSNs
- * @param {object} data - JSON returned by API call in lookupScientificNames
+ * Check to see that data for at least one common name was returned. If not, issue error. If so, parse the JSON and store similar common names and TSNs in "namesTsns" array.
+ * @method organizeCommonNamesAndTsns
+ * @param {object} data - JSON returned by API call in lookupSimilarNamesAndTsns
  * @return
  */
-function parseTSNs(data) {
+function organizeCommonNamesAndTsns(data) {
   if (data.commonNames.length === 1 && !data.commonNames[0]) {
     console.log(`No matching common names were found.`);
     return;
   }
 
   const namesTsns = [];
-  console.log("Common names matching input:");
-  for (let i = 0; i < data.commonNames.length; i++) {
+  // for (let i = 0; i < data.commonNames.length; i++) {
+  for (let i = 10; i < 20; i++) {
     namesTsns.push({ name: data.commonNames[i].commonName, tsn: data.commonNames[i].tsn });
+    findScientificNameFromTsn(data.commonNames[i].tsn, extractScientificNameAndKingdom);
   }
-
   console.log(`Number of entries returned: ${data.commonNames.length}`);
+  console.log("Common names matching input:");
   console.log(namesTsns);
-  const animalResults = findScientificNameFromTsn(namesTsns);
-  $("#js-scientific-name").val("Scientific name goes here");
   return;
 }
 
@@ -53,42 +53,61 @@ function parseTSNs(data) {
  * @param {} namesTsns
  * @return
  */
-function findScientificNameFromTsn(namesTsns) {
-  // https://www.itis.gov/ITISWebService/jsonservice/getScientificNameFromTSN?tsn=179759 // Robin
-  for (let i = 0; i < namesTsns.length; i++) {
-    // const res = getOrganism(namesTsns[i].tsn);
-    getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/getScientificNameFromTSN?tsn=", namesTsns[i].tsn, parseOrganism);
+function findScientificNameFromTsn(tsn, callback) {
+  if (isNaN(tsn)) {
+    console.log("TSN " + tsn + " id not a number!!!");
+  } else {
+    getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/getScientificNameFromTSN?tsn=", tsn, callback);
   }
+  // }
 }
 
 /**
  * Extract kingdom and scientific name from API result
- * @method parseOrganism
+ * @method extractScientificNameAndKingdom
  * @param {} data
  * @return
  */
-function parseOrganism(data) {
+function extractScientificNameAndKingdom(data) {
   const animal = [];
   if (data.kingdom.toLowerCase() === "animalia") {
-    animal.push({ kingdom: data.kingdom, tsn: data.tsn, scientificName: data.combinedName });
-    console.log("animal in parseOrganism");
-    console.log(animal);
-    getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/getParentTSNFromTSN?tsn=", data.tsn, parseParent);
-    // return animal;
+    console.log("animal in extractScientificNameAndKingdom");
+    findParentTsn(data.tsn);
   }
 }
 
+function findParentTsn(tsn) {
+  console.log(
+    "In findParentTsn and about to call getDataFromApi using getParentTSNFromTSN url with callback extractParentTsn and passing TSN: " + tsn
+  );
+  getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/getParentTSNFromTSN?tsn=", tsn, extractParentTsn);
+}
 /**
- * Extract relevant TSN parent data
- * @method parseParent
+ * Extract relevant TSN parent data and repeat until it is a bird
+ * @method extractParentTsn
  * @param {} data
  * @return
  */
-function parseParent(data) {
-  console.log("Inside parseParent");
+function extractParentTsn(data) {
+  console.log("Inside extractParentTsn with the following data: ");
   console.log(data);
+  findScientificNameFromTsn(data.parentTsn, isBird);
+  // findScientificNameFromTsn(data, isBird);
 }
 
+function isBird(data) {
+  console.log("Is it a bird?");
+  console.log(data);
+  if (data.combinedName === "Aves") {
+    console.log("combinedName is " + data.combinedName + " - it IS a BIRD!!!");
+  } else if (!isNaN(data.tsn)) {
+    console.log("CombinedName is " + data.combinedName);
+    findParentTsn(data.tsn);
+  } else {
+    console.log("No TSN in the following data");
+    console.log(data);
+  }
+}
 /**
  * Handle user events
  * @method handleUserActions
@@ -99,7 +118,7 @@ function handleUserActions() {
     e.preventDefault();
     let commonName = $("#js-common-name").val();
     if (commonName.length > 1) {
-      const ApiLookupResult = lookupScientificNames(commonName);
+      const ApiLookupResult = lookupSimilarNamesAndTsns(commonName);
     }
   });
 }
