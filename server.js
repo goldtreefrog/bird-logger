@@ -5,14 +5,20 @@ const express = require("express");
 
 // config file contains port settings.
 const { PORT } = require("./config");
-
+// Routes
 const router = require("./routes/router");
+// Use to log requests
+const logRequest = require("./log-request");
 
 const app = express();
 
-app.use(bodyParser.json());
+// app.all captures all requests to `/`, regardless of
+// the request method.
+app.all("/", logRequest);
 
 app.use("/", router);
+
+app.use(bodyParser.json());
 
 let server;
 
