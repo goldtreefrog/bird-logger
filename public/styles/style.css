@@ -17,12 +17,17 @@ label {
   width: 20%; }
 
 input {
-  clear: right;
   float: left;
-  width: 79%; }
+  width: 60%; }
+
+form button {
+  width: 19%;
+  clear: left;
+  float: right; }
 
 button.ctr {
   display: block;
+  float: none;
   margin-left: auto;
   margin-right: auto;
   border: 5px sold purple; }
