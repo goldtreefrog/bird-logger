@@ -1,19 +1,20 @@
 "use strict";
 
-const bodyParser = require("body-parser");
+// Setup and settings
 const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const { PORT, DATABASE_URL } = require("./config"); // config file contains port settings.
+const router = require("./routes/router"); // Routes and also loads static assets
+const logRequest = require("./log-request"); // Log requests
 
-// config file contains port settings.
-const { PORT } = require("./config");
-// Routes
-const router = require("./routes/router");
-// Use to log requests
-const logRequest = require("./log-request");
+// Mongoose internally uses a promise-like object, but it is better (according to Thinkful)
+// to make Mongoose use built in es6 promises
+mongoose.Promise = global.Promise;
 
 const app = express();
 
-// app.all captures all requests to `/`, regardless of
-// the request method.
+// Log all requests
 app.all("/", logRequest);
 
 app.use("/", router);
