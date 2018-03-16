@@ -4,6 +4,7 @@
 function getDataFromApi(baseUrl, searchTerm, callback) {
   const settings = {
     url: baseUrl + searchTerm,
+    contentType: "application/json",
     dataType: "json",
     type: "GET",
     success: callback
