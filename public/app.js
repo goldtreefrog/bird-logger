@@ -1,15 +1,25 @@
 "use strict";
 
 // 4. Generic call to ITIS API
-function getDataFromApi(baseUrl, searchTerm, callback) {
+function getDataFromApi(baseUrl, searchKey, searchTerm, callback) {
   const settings = {
-    url: baseUrl + searchTerm,
-    contentType: "application/json",
-    dataType: "json",
+    // Works:
+    // url: "https://www.itis.gov/ITISWebService/jsonservice/searchByCommonName?callback=?&srchKey=catbird",
+    //  Doesn't Work:
+    // url: "https://www.itis.gov/ITISWebService/jsonservice/searchByCommonName?callback=" + callback + "&srchKey=catbird",
+    // url: "https://www.itis.gov/ITISWebService/jsonservice/searchByCommonName?callback=organizeCommonNamesAndTsns&srchKey=catbird",
+    // url: baseUrl + "?callback=?&" + searchKey + "=" + searchTerm,  // Works
+    url: baseUrl + "?" + searchKey + "=" + searchTerm, // But so does this. callback= is being IGNORED.
+    // url: baseUrl + searchTerm + "&callback=?",
+    // contentType: "application/json",
+    // dataType: "jsonpCallback",  // Look at the other files
+    // dataType: "jsonp",  // and use this too.
+    // jsonpCallback: callback,
     type: "GET",
     success: callback
   };
-  console.log(baseUrl + searchTerm);
+  console.log(settings.url);
+  // console.log(baseUrl, searchTerm, callback);
   $.ajax(settings);
 }
 
@@ -22,7 +32,7 @@ function getDataFromApi(baseUrl, searchTerm, callback) {
 function lookupSimilarNamesAndTsns(commonName) {
   console.log(`Look up similar names for "${commonName}"`);
 
-  getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/searchByCommonName?srchKey=", commonName, organizeCommonNamesAndTsns);
+  getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/searchByCommonName", "srchKey", commonName, organizeCommonNamesAndTsns);
 }
 
 /**
@@ -32,6 +42,9 @@ function lookupSimilarNamesAndTsns(commonName) {
  * @return
  */
 function organizeCommonNamesAndTsns(data) {
+  console.log("Inside organizeCommonNamesAndTsns", data);
+  console.log(data.commonNames);
+
   if (data.commonNames.length === 1 && !data.commonNames[0]) {
     console.log(`No matching common names were found.`);
     return;
@@ -96,7 +109,8 @@ function findScientificNameFromTsn(tsn, callback) {
   if (isNaN(tsn)) {
     console.log("TSN " + tsn + " id not a number!!!");
   } else {
-    getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/getScientificNameFromTSN?tsn=", tsn, callback);
+    // getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/getScientificNameFromTSN?tsn=", tsn, callback);
+    getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/getScientificNameFromTSN", "tsn", tsn, callback);
   }
 }
 
