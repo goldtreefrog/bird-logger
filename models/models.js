@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 // Schema for a creature sighting
 const creatureSightingSchema = mongoose.Schema(
   {
+    tsn: { type: String },
     commonName: { type: String },
     scientificName: { type: String, required: true },
     dateSighted: { type: Date, required: true },
