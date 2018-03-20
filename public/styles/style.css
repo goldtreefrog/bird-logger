@@ -16,7 +16,8 @@ label {
   float: left;
   width: 20%; }
 
-input {
+input,
+form p {
   float: left;
   width: 60%; }
 

@@ -124,15 +124,21 @@ function extractScientificNameAndKingdom(data) {
   console.log("Inside extractScientificNameAndKingdom");
   console.log(data);
   console.log(data.combinedName);
-  if (data.kingdom.toLowerCase().trim() === "animalia") {
-    console.log("animal in extractScientificNameAndKingdom");
-    $("#js-scientific-name").val(data.combinedName);
-  } else {
-    console.log(data.kingdom.toLowerCase().trim());
-    $("#js-scientific-name").val("Not an animal. Kingdom: " + data.kingdom);
-    // console.log(data);
-    // findParentTsn(data.tsn); // Maybe later
-  }
+  $("#js-scientific-name").val(data.combinedName);
+  console.log(data.kingdom);
+  $("#js-kingdom").val(data.kingdom);
+  $("#js-kingdom").prop("readonly", true);
+  // $("#js-kingdom").text(data.kingdom);
+
+  // if (data.kingdom.toLowerCase().trim() === "animalia") {
+  //   console.log("animal in extractScientificNameAndKingdom");
+  // $("#js-scientific-name").val(data.combinedName);
+  // } else {
+  //   console.log(data.kingdom.toLowerCase().trim());
+  //   $("#js-scientific-name").val("Not an animal. Kingdom: " + data.kingdom);
+  // console.log(data);
+  // findParentTsn(data.tsn); // Maybe later
+  // }
 }
 
 // function findParentTsn(tsn) {
@@ -168,6 +174,20 @@ function extractScientificNameAndKingdom(data) {
 //   }
 // }
 
+function addSighting(sightingRecord) {
+  console.log("Adding sighting: " + sightingRecord);
+  $.ajax({
+    method: "POST",
+    url: SIGHTING_URL,
+    data: JSON.stringify(item),
+    success: function(data) {
+      getAndDisplayShoppingList();
+    },
+    dataType: "json",
+    contentType: "application/json"
+  });
+}
+
 /**
  * 2. Handle user action events
  * @method handleUserActions
@@ -179,6 +199,7 @@ function handleUserActions() {
   $("#js-common-name").on("change", function(e) {
     e.preventDefault();
     $("#js-scientific-name").val("");
+    $("#js-kingdom").val("");
     $("#name-choices").html("");
 
     let commonName = $("#js-common-name").val();
@@ -194,6 +215,36 @@ function handleUserActions() {
     console.log(tsn);
     $("#js-common-name").val($(e.target).text());
     findScientificNameFromTsn(tsn, extractScientificNameAndKingdom);
+  });
+
+  $("#js-save").on("click", function(e) {
+    e.preventDefault();
+    addSighting({
+      tsn: $(e.currentTarget)
+        .find("#js-tsn")
+        .val(),
+      commonName: $(e.currentTarget)
+        .find("#js-common-name")
+        .val(),
+      scientificName: $(e.currentTarget)
+        .find("#js-scientific-name")
+        .val(),
+      dateSighted: $(e.currentTarget)
+        .find("#js-date-sighted")
+        .val(),
+      timeSighted: $(e.currentTarget)
+        .find("#js-")
+        .val(),
+      location: $(e.currentTarget)
+        .find("#js-location")
+        .val(),
+      byWhom: $(e.currentTarget)
+        .find("#js-by-whom")
+        .val(),
+      comments: $(e.currentTarget)
+        .find("#js-comments")
+        .val()
+    });
   });
 }
 
