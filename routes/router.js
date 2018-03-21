@@ -26,7 +26,8 @@ router.get("/show-info/:tsn", (req, res) => {
 // If not, log an error and return a 400 status code.
 // If okay, add new item to CreatureSightings and return code 201.
 router.post("/", jsonParser, (req, res) => {
-  const requiredFields = ["tsn", "scientificName", "dateSighted", "Location", "byWhomSighted"];
+  console.log(req.body);
+  const requiredFields = ["scientificName", "dateSighted", "location", "byWhomSighted"];
   for (let i = 0; i < requiredFields.length; i++) {
     // const field = requiredFields[i];
     if (!(requiredFields[i] in req.body)) {
@@ -41,12 +42,12 @@ router.post("/", jsonParser, (req, res) => {
     scientificName: req.body.scientificName,
     dateSighted: req.body.dateSighted,
     timeSighted: req.body.timeSighted,
-    Location: req.body.Location,
+    location: req.body.location,
     byWhomSighted: req.body.byWhomSighted,
     Comments: req.body.Comments
   })
-    .then(function(blog) {
-      res.status(201).json(item);
+    .then(function(sighting) {
+      res.status(201).json(sighting);
     })
     .catch(function(err) {
       console.error(err);

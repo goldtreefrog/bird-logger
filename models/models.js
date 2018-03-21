@@ -10,7 +10,7 @@ const creatureSightingSchema = mongoose.Schema(
     scientificName: { type: String, required: true },
     dateSighted: { type: Date, required: true },
     timeSighted: String,
-    Location: { type: String, required: true },
+    location: { type: String, required: true },
     byWhomSighted: { type: String, required: true },
     comments: String
   },

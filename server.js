@@ -4,7 +4,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const { PORT, DATABASE_URL } = require("./config"); // config file contains port settings.
+const { DATABASE_URL, PORT } = require("./config"); // config file contains port settings.
 const router = require("./routes/router"); // Routes and also loads static assets
 const logRequest = require("./log-request"); // Log requests
 
@@ -24,19 +24,22 @@ app.use(bodyParser.json());
 let server;
 
 // this function connects to our database, then starts the server
-// function runServer(databaseUrl, port = PORT) {  // Except we don't have a db YET.
 function runServer(databaseUrl, port = PORT) {
   return new Promise((resolve, reject) => {
-    server = app
-      .listen(port, () => {
-        console.log(`Your app is listening on port ${port}`);
-        resolve();
-      })
-      .on("error", err => {
-        reject(err);
-      });
+    mongoose.connect(databaseUrl, err => {
+      if (err) {
+        return reject(err);
+      }
+      server = app
+        .listen(port, () => {
+          console.log(`Your app is listening on port ${port}`);
+          resolve();
+        })
+        .on("error", err => {
+          reject(err);
+        });
+    });
   });
-  // });
 }
 
 // this function closes the server, and returns a promise. we'll

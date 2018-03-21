@@ -175,13 +175,15 @@ function extractScientificNameAndKingdom(data) {
 // }
 
 function addSighting(sightingRecord) {
+  window.test = sightingRecord;
   console.log("Adding sighting: " + sightingRecord);
   $.ajax({
     method: "POST",
-    url: SIGHTING_URL,
-    data: JSON.stringify(item),
+    url: "http://localhost:8080/",
+    data: JSON.stringify(sightingRecord),
     success: function(data) {
-      getAndDisplayShoppingList();
+      console.log("Success!!!");
+      // getAndDisplayShoppingList();
     },
     dataType: "json",
     contentType: "application/json"
@@ -220,30 +222,14 @@ function handleUserActions() {
   $("#js-save").on("click", function(e) {
     e.preventDefault();
     addSighting({
-      tsn: $(e.currentTarget)
-        .find("#js-tsn")
-        .val(),
-      commonName: $(e.currentTarget)
-        .find("#js-common-name")
-        .val(),
-      scientificName: $(e.currentTarget)
-        .find("#js-scientific-name")
-        .val(),
-      dateSighted: $(e.currentTarget)
-        .find("#js-date-sighted")
-        .val(),
-      timeSighted: $(e.currentTarget)
-        .find("#js-")
-        .val(),
-      location: $(e.currentTarget)
-        .find("#js-location")
-        .val(),
-      byWhom: $(e.currentTarget)
-        .find("#js-by-whom")
-        .val(),
-      comments: $(e.currentTarget)
-        .find("#js-comments")
-        .val()
+      tsn: $("#js-tsn").val(),
+      commonName: $("#js-common-name").val(),
+      scientificName: $("#js-scientific-name").val(),
+      dateSighted: $("#js-date-sighted").val(),
+      timeSighted: $("#js-time-sighted").val(),
+      location: $("#js-location").val(),
+      byWhomSighted: $("#js-by-whom").val(),
+      comments: $("#js-comments").val()
     });
   });
 }
