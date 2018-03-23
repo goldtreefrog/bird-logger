@@ -2,26 +2,29 @@
 
 function populateList() {
   const settings = {
-    url: "http://squid5test.com:8080/list",
+    url: "http://localhost:8080/creature-sightings",
     type: "GET",
-    callback: "insertList",
-    dataType: "jsonp"
-  };
-  console.log("About to do .ajax with settings: ", settings);
-  console.log(settings.success);
-  // $.ajax(settings);
-  $.ajax({
-    settings,
     success: insertList,
     error: function(xhr) {
       console.log("error", xhr);
-    }
-  });
+    },
+    dataType: "json"
+  };
+  console.log("About to do .ajax with settings: ", settings);
+  // console.log(settings.success);
+  $.ajax(settings);
 }
 
 function insertList(data) {
   console.log("Inside insertList");
   console.log(data);
+
+  const listHtml = data.creatureSightings
+    .map(sighting => {
+      return `<li>${sighting.commonName}</li>`;
+    })
+    .join();
+  $("#js-list").html(listHtml);
 }
 /**
  * 2. Handle user action events

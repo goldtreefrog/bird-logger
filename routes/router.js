@@ -8,17 +8,9 @@ const jsonParser = bodyParser.json();
 
 const { CreatureSighting } = require("./../models/models");
 
-var path = require("path");
+router.use(express.static("public"));
 
-// router.use(express.static("public"));
-
-router.get("/list.html", (req, res) => {
-  console.log("***hi*****");
-  console.log(path.resolve(__dirname + "/../public/list.html"));
-  res.sendFile(path.resolve(__dirname + "/../public/list.html"));
-});
-
-router.get("/list", jsonParser, (req, res) => {
+router.get("/creature-sightings", jsonParser, (req, res) => {
   CreatureSighting.find()
     .limit(3)
     .then(creatureSightings => {
@@ -46,7 +38,6 @@ router.post("/", jsonParser, (req, res) => {
   console.log(req.body);
   const requiredFields = ["scientificName", "dateSighted", "location", "byWhomSighted"];
   for (let i = 0; i < requiredFields.length; i++) {
-    // const field = requiredFields[i];
     if (!(requiredFields[i] in req.body)) {
       const message = `Missing \`${requiredFields[i]}\` in request body`;
       console.error(message);
