@@ -6,15 +6,32 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 
-const { CreatureSighting } = require("./../models/models.js");
+const { CreatureSighting } = require("./../models/models");
 
-router.use(express.static("public"));
+var path = require("path");
 
-router.get("/", (req, res) => {
-  res.send("Got!");
+// router.use(express.static("public"));
+
+router.get("/list.html", (req, res) => {
+  console.log("***hi*****");
+  console.log(path.resolve(__dirname + "/../public/list.html"));
+  res.sendFile(path.resolve(__dirname + "/../public/list.html"));
 });
 
-router.get("/show-info/:tsn", (req, res) => {
+router.get("/list", jsonParser, (req, res) => {
+  CreatureSighting.find()
+    .limit(3)
+    .then(creatureSightings => {
+      console.log("Retrieving creature sightings list");
+      res.json({ creatureSightings });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: "Internal server error. Unable to display data." });
+    });
+});
+
+router.get("/show-info", (req, res) => {
   res.json({
     host: req.hostname,
     queryParams: req.query,
@@ -51,7 +68,7 @@ router.post("/", jsonParser, (req, res) => {
     })
     .catch(function(err) {
       console.error(err);
-      res.status(500).json({ message: "Internal server error. Record not created." });
+      res.status(500).json({ message: `Internal server error. Record not created. Error: ${err}` });
     });
 });
 

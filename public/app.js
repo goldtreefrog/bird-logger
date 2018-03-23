@@ -183,7 +183,6 @@ function addSighting(sightingRecord) {
     data: JSON.stringify(sightingRecord),
     success: function(data) {
       console.log("Success!!!");
-      // getAndDisplayShoppingList();
     },
     dataType: "json",
     contentType: "application/json"
