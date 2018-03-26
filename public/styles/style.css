@@ -11,6 +11,12 @@ button {
   padding: 5px;
   font-weight: 700; }
 
+a {
+  padding: 2px 5px;
+  color: white;
+  background-color: #000099;
+  border: 2px solid white; }
+
 label {
   clear: left;
   float: left;
