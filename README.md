@@ -34,4 +34,4 @@ NOTE: Replace "bird" with "animal/plant" in the flows below.
 
 NOTE: The educational emphasis was on the back-end server, so screen development was deliberately kept simple.
 
-![Add a Sighting](github-images/EnterBird2.png)![List Sightings](github-images/ListSightings.png)
+![Add a Sighting](github-images/EnterBird2.jpg)![List Sightings](github-images/ListSightings.jpg)
