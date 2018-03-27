@@ -184,13 +184,26 @@ function findSingleSighting(Id) {
   $.ajax({
     method: "GET",
     url: "http://localhost:8080/find/" + Id,
-    success: function(data) {
-      console.log("Found Id: ", Id, data);
-    },
+    success: populateViewForm,
     dataType: "json",
     contentType: "application/json"
   });
 }
+
+
+function populateViewForm(data) {
+  console.log("Inside populateViewForm with data: ", data);
+  $("#js-common-name").val(data.creatureSightings.commonName);
+  $("#js-scientific-name").val(data.creatureSightings.scientificName);
+  $("#js-kingdom").val(data.creatureSightings.kingdom);
+  $("#js-date-sighted").val(data.creatureSightings.dateSighted);
+  $("#js-time-sighted").val(data.creatureSightings.timeSighted);
+  $("#js-location").val(data.creatureSightings.location);
+  $("#js-by-whom").val(data.creatureSightings.byWhomSighted);
+  $("#js-comments").val(data.creatureSightings.comments);
+}
+
+
 
 /**
  * 2. Handle user action events
@@ -234,6 +247,7 @@ function handleUserActions() {
       tsn: $("#js-tsn").val(),
       commonName: $("#js-common-name").val(),
       scientificName: $("#js-scientific-name").val(),
+      kingdom: $("#js-kingdom").val(),
       dateSighted: $("#js-date-sighted").val(),
       timeSighted: $("#js-time-sighted").val(),
       location: $("#js-location").val(),
@@ -248,6 +262,11 @@ function handleUserActions() {
   findSingleSighting(e.target.getAttribute("data-id"));
 });
 
+
+  $("#js-list").on("click", "#js-delete", function(e) {
+  e.preventDefault();
+  console.log("Delete: ", e.target.getAttribute("data-id"));
+});
 
 }
 
