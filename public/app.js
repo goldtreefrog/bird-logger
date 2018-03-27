@@ -20,7 +20,10 @@ function insertList(data) {
 
   const listHtml = data.creatureSightings
     .map(sighting => {
-      return `<li><span class="hidden">${sighting._id}</span> <span class="list-item">${sighting.commonName}</span> </li>
+      return `<li><span class="sighting-list">${sighting.commonName}</span> <span class="sighting-list">${sighting.scientificName}</span> <span class="sighting-list">${sighting.dateSighted}</span> <span class="sighting-list">${sighting.timeSighted}</span> <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.byWhomSighted}</span>
+  <button class="sighting-list view" id="js-view" data-id="${sighting._id}">View/Update</button>
+  <button class="sighting-list delete" id="js-delete" data-id="${sighting._id}">Delete</button>
+</li>
 `;
     })
     .join("");
@@ -175,6 +178,20 @@ function addSighting(sightingRecord) {
   });
 }
 
+function findSingleSighting(Id) {
+  // window.test = Id;
+  console.log("Found sighting: " + Id);
+  $.ajax({
+    method: "GET",
+    url: "http://localhost:8080/find/" + Id,
+    success: function(data) {
+      console.log("Found Id: ", Id, data);
+    },
+    dataType: "json",
+    contentType: "application/json"
+  });
+}
+
 /**
  * 2. Handle user action events
  * @method handleUserActions
@@ -204,6 +221,13 @@ function handleUserActions() {
     findScientificNameFromTsn(tsn, extractScientificNameAndKingdom);
   });
 
+  $("#js-show-list").on("click", function(e) {
+  e.preventDefault();
+  console.log("Inside #js-show-list click event.");
+  populateList();
+});
+
+
   $("#js-save").on("click", function(e) {
     e.preventDefault();
     addSighting({
@@ -217,11 +241,13 @@ function handleUserActions() {
       comments: $("#js-comments").val()
     });
   });
-  $("#js-show-list").on("click", function(e) {
+
+  $("#js-list").on("click", "#js-view", e => {
   e.preventDefault();
-  console.log("Inside #js-show-list click event.");
-  populateList();
+  console.log("Inside click event for View/Update with data-id: ", e.target.getAttribute("data-id"));
+  findSingleSighting(e.target.getAttribute("data-id"));
 });
+
 
 }
 

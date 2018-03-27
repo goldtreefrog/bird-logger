@@ -12,7 +12,7 @@ router.use(express.static("public"));
 
 router.get("/creature-sightings", jsonParser, (req, res) => {
   CreatureSighting.find()
-    .limit(3)
+    .limit(50)
     .then(creatureSightings => {
       console.log("Retrieving creature sightings list");
       res.json({ creatureSightings });
@@ -20,6 +20,18 @@ router.get("/creature-sightings", jsonParser, (req, res) => {
     .catch(err => {
       console.log(err);
       res.status(500).json({ message: "Internal server error. Unable to display data." });
+    });
+});
+
+router.get("/find/:id", jsonParser, (req, res) => {
+  console.log("In GET for one ID: ", req.params.id);
+  CreatureSighting.findOne({ _id: req.params.id })
+    .then(creatureSightings => {
+      res.json({ creatureSightings });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: "Internal server error. Unable to display record." });
     });
 });
 
