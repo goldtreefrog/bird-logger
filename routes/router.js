@@ -76,4 +76,25 @@ router.post("/", jsonParser, (req, res) => {
     });
 });
 
+router.delete("/:id", (req, res) => {
+  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  console.log(req.params.id);
+  console.log(`Deleted item ${req.params.id}`);
+  let id = req.params.id;
+  // CreatureSighting.remove({ _id: id }, function(err) {
+  //   if (err) return handleError(err);
+  //   // removed!
+  // });
+  // res.status(204).end();
+
+  CreatureSighting.remove({ _id: id })
+    .then(function() {
+      res.status(204).end();
+    })
+    .catch(function(err) {
+      console.error(err);
+      res.status(500).json({ message: `Internal server error. Record not deleted. Error: ${err}` });
+    });
+});
+
 module.exports = router;
