@@ -48,6 +48,8 @@ router.get("/show-info", (req, res) => {
 // If okay, add new item to CreatureSightings and return code 201.
 router.post("/", jsonParser, (req, res) => {
   const requiredFields = ["scientificName", "dateSighted", "location", "byWhomSighted"];
+  // const requiredFields = { scientificName: "Scientific Name", dateSighted: "Date Sighted", location: "Location", byWhomSighted: "By Whom" };
+  console.log(requiredFields);
   let message = "";
 
   for (let i = 0; i < requiredFields.length; i++) {
@@ -55,7 +57,7 @@ router.post("/", jsonParser, (req, res) => {
       message = `Missing \`${requiredFields[i]}\` in request body`;
       return res.status(400).send(message);
     } else {
-      if (req.body[requiredFields[i]] === "") {
+      if (req.body[requiredFields[i]].trim() === "") {
         message += requiredFields[i] + ", ";
       }
     }
@@ -76,7 +78,7 @@ router.post("/", jsonParser, (req, res) => {
     timeSighted: req.body.timeSighted,
     location: req.body.location,
     byWhomSighted: req.body.byWhomSighted,
-    Comments: req.body.Comments
+    comments: req.body.comments
   })
     .then(function(sighting) {
       res.status(201).json(sighting);

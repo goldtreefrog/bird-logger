@@ -18,7 +18,7 @@
       <a id="banner-img"></a>
       <h1>Creature Watcher's Creature Log</h1>
       <h2></h2>
-      <nav role="navigation" id="navi-h"><a href="#" class="common-events">Home</a> <a href="#" class="common-events">About</a> <a href="#" class="common-events">Add&nbsp;Sighting</a> <a href="#" class="common-events">Find&nbsp;Sighting</a> <a href="#" id="js-show-list" class="common-events">Show&nbsp;All</a> <a href="#" class="common-events">Contact</a></nav>
+      <nav role="navigation" id="navi-h"><a href="#" class="common-events">Home</a> <a href="#" class="common-events">About</a> <a href="#" class="common-events" id="js-add-sighting">Add&nbsp;Sighting</a> <a href="#" class="common-events">Find&nbsp;Sighting</a> <a href="#" id="js-show-list" class="common-events">Show&nbsp;All</a> <a href="#" class="common-events">Contact</a></nav>
     </header>
     <main role="main">
       <section class="enter-data">
@@ -26,23 +26,22 @@
           <fieldset class="bird-names">
             <div class="feedback" id="js-feedback"></div>
             <p>Enter common or scientific name below:</p>
-            <ul id="name-choices"></ul>
             <input type="hidden" id="js-tsn" name="tsn" />
             <label for="common-name">Common Name:</label>
-            <input type="text" id="js-common-name" name="common-name" accesskey="n" />
+            <input type="text" id="js-common-name" name="common-name" accesskey="n" required="required" data-lpignore="true" />
             <label for="scientific-name">Scientific Name:</label>
-            <input type="text" id="js-scientific-name" name="scientific-name" accesskey="s" />
+            <input type="text" id="js-scientific-name" name="scientific-name" accesskey="s" required="required" />
             <button type="button" name="read-description" value="Read Description" accesskey="r" id="js-read-description" class="right-col">Read Description</button>
             <label for="kingdom">Kingdom:</label>
             <input type="text" id="js-kingdom" name="kingdom" accesskey="k" />
             <label for="date-sighted">Date Sighted:</label>
-            <input type="text" id="js-date-sighted" name="date-sighted" accesskey="d" />
+            <input type="text" id="js-date-sighted" name="date-sighted" accesskey="d" required="required" />
             <label for="time-sighted">Time:</label>
             <input type="text" id="js-time-sighted" name="time-sighted" accesskey="t" />
             <label for="location">Location:</label>
-            <input type="text" id="js-location" name="location" accesskey="l" />
+            <input type="text" id="js-location" name="location" accesskey="l" required="required" />
             <label for="by-whom">By Whom:</label>
-            <input type="text" id="js-by-whom" name="by-whom" accesskey="b" />
+            <input type="text" id="js-by-whom" name="by-whom" accesskey="b" required="required" />
             <label for="comments">Comments:</label>
             <input type="text" id="js-comments" name="comments" accesskey="c" />
             <div class="ctr">
@@ -51,6 +50,10 @@
             </div>
           </fieldset>
         </form>
+      </section>
+      <section class="name-choices">
+        <p>Please click on the species you want:</p>
+        <ul id="name-choices"></ul>
       </section>
       <section class="display-data">
         <ul class="common-events" id="js-list"></ul>

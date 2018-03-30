@@ -64,6 +64,10 @@ nav#navi-h {
     border-bottom-right-radius: 10px;
     text-decoration: none; }
 
+section.name-choices,
+section.display-data {
+  display: none; }
+
 @media only screen and (min-width: 440px) {
   .ctr {
     clear: both;

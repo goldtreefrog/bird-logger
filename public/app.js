@@ -2,18 +2,28 @@
 
 const STORE = { isCreate: true };
 
+function showSection(showSection) {
+  $("section").css("display", "none");
+  let section;
+  if (!(showSection.slice(0, 1) === ".")) {
+    section = "section." + showSection;
+  } else {
+    section = "section" + showSection;
+  }
+  console.log("section: ", section);
+  $(section).css("display", "block");
+}
+
 function displayMessage(errText) {
   $("#js-feedback").css("visibility", "visible");
   $("#js-feedback").html(errText);
   console.log(errText);
 }
 
-
 function resetFeedback() {
   $("#js-feedback").css("visibility", "hidden");
   $("#js-feedback").html("");
 }
-
 
 function populateList() {
   const settings = {
@@ -47,10 +57,10 @@ function updateSighting(sightingRecord) {
 function insertList(data) {
   console.log("Inside insertList");
   console.log(data);
-
+  showSection("display-data");
   const listHtml = data.creatureSightings
     .map(sighting => {
-      return `<li><span class="sighting-list">${sighting.commonName}</span> <span class="sighting-list">${sighting.scientificName}</span> <span class="sighting-list">${sighting.dateSighted}</span> <span class="sighting-list">${sighting.timeSighted}</span> <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span> <span class="sighting-list">${sighting.comments}</span>
+      return `<li><span class="sighting-list">${sighting.commonName}</span> <span class="sighting-list">${sighting.scientificName}</span> <span class="sighting-list">${sighting.dateSighted}</span> <span class="sighting-list">${sighting.timeSighted}</span> <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span>
   <button class="sighting-list view"  id="js-view" data-id="${sighting._id}">View/Update</button>
   <button class="sighting-list delete" id="js-delete" data-id="${sighting._id}">Delete</button>
 </li>
@@ -72,7 +82,6 @@ function getDataFromApi(baseUrl, searchKey, searchTerm, callback) {
   // console.log(baseUrl, searchTerm, callback);
   $.ajax(settings);
 }
-
 
 /**
  * 3. Look up similar common names and Taxonomic Serial Numbers (TSNs) at ITIS from common name input by user
@@ -127,13 +136,13 @@ function organizeCommonNamesAndTsns(data) {
   return;
 }
 
-
 // 6. Display multiple names that are similar to the one the user entered.
 // This function gets called if the common name the user entered does not precisely match any in the ITIS database or if the user clicks the ___ button to show similar names.
 function displayNameAlternatives(namesTsns) {
   console.log("Common names matching input:");
   console.log(namesTsns);
-  let maxEntries = 20; // Arbitrary number than can be changed.
+  showSection("name-choices");
+  let maxEntries = 20; // Arbitrary number that can be changed.
   if (namesTsns.length < maxEntries) {
     maxEntries = namesTsns.length;
   }
@@ -176,16 +185,17 @@ function findScientificNameFromTsn(tsn, callback) {
  * @param {} data
  * @return
  */
-
 function extractScientificNameAndKingdom(data) {
   console.log("Inside extractScientificNameAndKingdom");
   console.log(data);
   console.log(data.combinedName);
+  showSection("enter-data");
   $("#js-scientific-name").val(data.combinedName);
   console.log(data.kingdom);
   $("#js-kingdom").val(data.kingdom);
   $("#js-kingdom").prop("readonly", true);
 }
+
 /**
  * Extract relevant TSN parent data and repeat until it is a bird
  * @method extractParentTsn
@@ -206,6 +216,7 @@ function addSighting(sightingRecord) {
       $("input").val("");
     },
     error: function(data) {
+      console.log(data.responseText);
       displayMessage(data.responseText);
     },
     // error: function(data) {
@@ -220,6 +231,7 @@ function addSighting(sightingRecord) {
 
 function findSingleSighting(id) {
   // window.test = id;
+  showSection("enter-data");
   console.log("Found sighting: " + id);
   $.ajax({
     method: "GET",
@@ -233,6 +245,7 @@ function findSingleSighting(id) {
 
 function populateViewForm(data) {
   console.log("Inside populateViewForm with data: ", data);
+  showSection("enter-data");
   $("#js-common-name").val(data.creatureSightings.commonName);
   $("#js-scientific-name").val(data.creatureSightings.scientificName);
   $("#js-kingdom").val(data.creatureSightings.kingdom);
@@ -282,6 +295,11 @@ function handleUserActions() {
     findScientificNameFromTsn(tsn, extractScientificNameAndKingdom);
   });
 
+  $("#js-add-sighting").on("click", e => {
+  showSection("enter-data");
+});
+
+
   $("#js-show-list").on("click", function(e) {
   e.preventDefault();
   console.log("Inside #js-show-list click event.");
@@ -289,7 +307,8 @@ function handleUserActions() {
 });
 
 
-  $("#js-save").on("click", function(e) {
+  // $("#js-save").on("click", function(e) { // < Don't do. Bypasses HTML-level forms validation.
+$("form").on("submit", function(e) {
   e.preventDefault();
   const record = {
     tsn: $("#js-tsn").val(),
