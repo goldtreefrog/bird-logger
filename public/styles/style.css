@@ -18,11 +18,24 @@ label {
   width: 100%; }
 
 input,
-form p,
 button.right-col {
   width: 100%;
   line-height: 1em;
   margin: 0.5em 0; }
+
+fieldset.bird-names p,
+fieldset.bird-names .feedback {
+  display: block;
+  width: 100%;
+  line-height: 1em;
+  margin: 0.5em 0;
+  padding: 0.5em; }
+
+fieldset.bird-names .feedback {
+  background-color: #ffaa99;
+  font-weight: bolder;
+  height: 1em;
+  visibility: hidden; }
 
 button.right-col {
   clear: both;
@@ -73,7 +86,7 @@ nav#navi-h {
     width: 70%;
     margin: 0.5em 0 0.5em 1%; }
   button.right-col {
-    margin-left: 21%; } }
+    margin-left: 22%; } }
 
 @media only screen and (min-width: 900px) {
   body {
@@ -90,11 +103,17 @@ nav#navi-h {
       display: inline-block;
       clear: none;
       width: auto; }
+  fieldset.bird-names .feedback {
+    display: inline-block;
+    width: 58%;
+    float: right; }
+  fieldset.bird-names p {
+    display: inline-block;
+    width: 40%; }
   label {
     float: left;
     clear: left; }
-  input,
-  form p {
+  input {
     clear: right;
     float: left;
     width: 58%; }

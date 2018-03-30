@@ -13,7 +13,7 @@ const creatureSightingSchema = mongoose.Schema(
     timeSighted: String,
     location: { type: String, required: true },
     byWhomSighted: { type: String, required: true },
-    comments: { type: String }
+    comments: String
   },
   {
     timestamps: true

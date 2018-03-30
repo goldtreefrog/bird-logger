@@ -2,6 +2,19 @@
 
 const STORE = { isCreate: true };
 
+function displayMessage(errText) {
+  $("#js-feedback").css("visibility", "visible");
+  $("#js-feedback").html(errText);
+  console.log(errText);
+}
+
+
+function resetFeedback() {
+  $("#js-feedback").css("visibility", "hidden");
+  $("#js-feedback").html("");
+}
+
+
 function populateList() {
   const settings = {
     url: "http://localhost:8080/creature-sightings",
@@ -38,7 +51,7 @@ function insertList(data) {
   const listHtml = data.creatureSightings
     .map(sighting => {
       return `<li><span class="sighting-list">${sighting.commonName}</span> <span class="sighting-list">${sighting.scientificName}</span> <span class="sighting-list">${sighting.dateSighted}</span> <span class="sighting-list">${sighting.timeSighted}</span> <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span> <span class="sighting-list">${sighting.comments}</span>
-  <button class="sighting-list view" id="js-view" data-id="${sighting._id}">View/Update</button>
+  <button class="sighting-list view"  id="js-view" data-id="${sighting._id}">View/Update</button>
   <button class="sighting-list delete" id="js-delete" data-id="${sighting._id}">Delete</button>
 </li>
 `;
@@ -189,19 +202,28 @@ function addSighting(sightingRecord) {
     data: JSON.stringify(sightingRecord),
     success: function(data) {
       console.log("Success!!!");
+      displayMessage(sightingRecord.commonName + " record saved successfully.");
+      $("input").val("");
     },
+    error: function(data) {
+      displayMessage(data.responseText);
+    },
+    // error: function(data) {
+    //   console.log("error in addSighting");
+    //   console.log(data.responseText);
+    // },
     dataType: "json",
     contentType: "application/json"
   });
 }
 
 
-function findSingleSighting(Id) {
-  // window.test = Id;
-  console.log("Found sighting: " + Id);
+function findSingleSighting(id) {
+  // window.test = id;
+  console.log("Found sighting: " + id);
   $.ajax({
     method: "GET",
-    url: "http://localhost:8080/find/" + Id, // Change this URL
+    url: "http://localhost:8080/find/" + id, // Change this URL
     success: populateViewForm,
     dataType: "json",
     contentType: "application/json"
@@ -273,13 +295,19 @@ function handleUserActions() {
     tsn: $("#js-tsn").val(),
     commonName: $("#js-common-name").val(),
     scientificName: $("#js-scientific-name").val(),
+    kingdom: $("#js-kingdom").val(),
+    dateSighted: $("#js-date-sighted").val(),
+    timeSighted: $("#js-time-sighted").val(),
     location: $("#js-location").val(),
     byWhomSighted: $("#js-by-whom").val(),
     comments: $("#js-comments").val()
   };
+  const required = ["scientificName", "location", "dateSighted", "location", "byWhomSighted"];
   if (STORE.isCreate) {
     addSighting(record);
   } else {
+    console.log("About to call updateSighting");
+    console.log(record);
     updateSighting(record);
   }
 });
@@ -319,6 +347,12 @@ function handleUserActions() {
   // e.preventDefault();
   $("input").val("");
   STORE.isCreate = true;
+});
+
+
+  $(".common-events").on("click", e => {
+  // e.preventDefault();
+  resetFeedback();
 });
 
 }

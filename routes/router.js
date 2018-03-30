@@ -47,15 +47,26 @@ router.get("/show-info", (req, res) => {
 // If not, log an error and return a 400 status code.
 // If okay, add new item to CreatureSightings and return code 201.
 router.post("/", jsonParser, (req, res) => {
-  console.log("Inside post. req.body: ", req.body);
   const requiredFields = ["scientificName", "dateSighted", "location", "byWhomSighted"];
+  let message = "";
+
   for (let i = 0; i < requiredFields.length; i++) {
     if (!(requiredFields[i] in req.body)) {
-      const message = `Missing \`${requiredFields[i]}\` in request body`;
-      console.error(message);
+      message = `Missing \`${requiredFields[i]}\` in request body`;
       return res.status(400).send(message);
+    } else {
+      if (req.body[requiredFields[i]] === "") {
+        message += requiredFields[i] + ", ";
+      }
     }
   }
+  if (message > "") {
+    message = message.slice(0, -2); // remove last comma and space
+    message = "Please fill in these required fields: " + message;
+    console.log(message);
+    return res.status(400).send(message);
+  }
+
   const item = CreatureSighting.create({
     tsn: req.body.tsn,
     commonName: req.body.commonName,
@@ -74,6 +85,15 @@ router.post("/", jsonParser, (req, res) => {
       console.error(err);
       res.status(500).json({ message: `Internal server error. Record not created. Error: ${err}` });
     });
+});
+
+router.put("/:id", jsonParser, (req, res) => {
+  // res.json({ message: "Inside put" });
+  console.log("req.body :", req.body);
+  CreatureSighting.findByIdAndUpdate(req.params.id, req.body, function(err, record) {
+    if (err) return handleError(err);
+    res.send(record);
+  });
 });
 
 router.delete("/:id", (req, res) => {
