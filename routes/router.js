@@ -47,21 +47,26 @@ router.get("/show-info", (req, res) => {
 // If not, log an error and return a 400 status code.
 // If okay, add new item to CreatureSightings and return code 201.
 router.post("/", jsonParser, (req, res) => {
-  const requiredFields = ["scientificName", "dateSighted", "location", "byWhomSighted"];
-  // const requiredFields = { scientificName: "Scientific Name", dateSighted: "Date Sighted", location: "Location", byWhomSighted: "By Whom" };
+  // const requiredFields = ["scientificName", "dateSighted", "location", "byWhomSighted"];
+  const requiredFields = { scientificName: "Scientific Name", dateSighted: "Date Sighted", location: "Location", byWhomSighted: "By Whom" };
   console.log(requiredFields);
+
   let message = "";
 
-  for (let i = 0; i < requiredFields.length; i++) {
-    if (!(requiredFields[i] in req.body)) {
-      message = `Missing \`${requiredFields[i]}\` in request body`;
-      return res.status(400).send(message);
-    } else {
-      if (req.body[requiredFields[i]].trim() === "") {
-        message += requiredFields[i] + ", ";
+  for (var k in requiredFields) {
+    if (requiredFields.hasOwnProperty(k)) {
+      // alert("Key is " + k + ", value is" + target[k]);
+      if (!(k in req.body)) {
+        message = `Missing \`${k}\` in request body`;
+        return res.status(400).send(message);
+      } else {
+        if (req.body[k].trim() === "") {
+          message += requiredFields[k] + ", ";
+        }
       }
     }
   }
+
   if (message > "") {
     message = message.slice(0, -2); // remove last comma and space
     message = "Please fill in these required fields: " + message;
