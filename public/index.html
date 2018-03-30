@@ -16,9 +16,9 @@
   <body>
     <header role="banner">
       <a id="banner-img"></a>
-      <h1>Creature Watcher's Logger 5</h1>
+      <h1>Creature Watcher's Creature Log</h1>
       <h2></h2>
-      <nav role="navigation" id="navi-h"><a href="#">Home</a><a href="#">About</a><a href="#">Add Sighting</a><a href="#">Find Sighting</a><a href="#" id="js-show-list">Show All Sightings</a><a href="#">Contact</a></nav>
+      <nav role="navigation" id="navi-h"><a href="#">Home</a> <a href="#">About</a> <a href="#">Add&nbsp;Sighting</a> <a href="#">Find&nbsp;Sighting</a> <a href="#" id="js-show-list">Show&nbsp;All</a> <a href="#">Contact</a></nav>
     </header>
     <main role="main">
       <section class="enter-data">
@@ -29,9 +29,9 @@
             <input type="hidden" id="js-tsn" name="tsn" />
             <label for="common-name">Common Name:</label>
             <input type="text" id="js-common-name" name="common-name" accesskey="n" />
-            <button type="button" name="read-description" value="Read Description" accesskey="r" id="js-read-description">Read Description</button>
             <label for="scientific-name">Scientific Name:</label>
             <input type="text" id="js-scientific-name" name="scientific-name" accesskey="s" />
+            <button type="button" name="read-description" value="Read Description" accesskey="r" id="js-read-description" class="right-col">Read Description</button>
             <label for="kingdom">Kingdom:</label>
             <input type="text" id="js-kingdom" name="kingdom" accesskey="k" />
             <label for="date-sighted">Date Sighted:</label>
@@ -44,7 +44,10 @@
             <input type="text" id="js-by-whom" name="by-whom" accesskey="b" />
             <label for="comments">Comments:</label>
             <input type="text" id="js-comments" name="comments" accesskey="c" />
-            <button type="submit" name="save" value="save" accesskey="a" id="js-save" class="ctr">Save</button>
+            <div class="ctr">
+              <button type="submit" name="save" value="save" accesskey="a" id="js-save" class="bottom-left">Save</button>
+              <button type="button" name="clear" value="clear" accesskey="a" id="js-clear" class="bottom-right">Clear</button>
+            </div>
           </fieldset>
         </form>
       </section>

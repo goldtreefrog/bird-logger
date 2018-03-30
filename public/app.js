@@ -1,5 +1,7 @@
 "use strict";
 
+const STORE = { isCreate: true };
+
 function populateList() {
   const settings = {
     url: "http://localhost:8080/creature-sightings",
@@ -14,17 +16,28 @@ function populateList() {
   $.ajax(settings);
 }
 
+function updateSighting(sightingRecord) {
+  console.log("updating sighting: " + sightingRecord);
+  $.ajax({
+    method: "PUT",
+    url: `/${STORE.updateId}`,
+    data: JSON.stringify(sightingRecord),
+    success: function(data) {
+      console.log("Success!!!");
+    },
+    dataType: "json",
+    contentType: "application/json"
+  });
+}
+
+
 function insertList(data) {
   console.log("Inside insertList");
   console.log(data);
 
   const listHtml = data.creatureSightings
     .map(sighting => {
-      return `<li><span class="sighting-list">${sighting.commonName}</span> <span class="sighting-list">${
-        sighting.scientificName
-      }</span> <span class="sighting-list">${sighting.dateSighted}</span> <span class="sighting-list">${
-        sighting.timeSighted
-      }</span> <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.byWhomSighted}</span>
+      return `<li><span class="sighting-list">${sighting.commonName}</span> <span class="sighting-list">${sighting.scientificName}</span> <span class="sighting-list">${sighting.dateSighted}</span> <span class="sighting-list">${sighting.timeSighted}</span> <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span> <span class="sighting-list">${sighting.comments}</span>
   <button class="sighting-list view" id="js-view" data-id="${sighting._id}">View/Update</button>
   <button class="sighting-list delete" id="js-delete" data-id="${sighting._id}">Delete</button>
 </li>
@@ -33,6 +46,7 @@ function insertList(data) {
     .join("");
   $("#js-list").html(listHtml);
 }
+
 
 // 4. Generic call to ITIS API
 function getDataFromApi(baseUrl, searchKey, searchTerm, callback) {
@@ -45,6 +59,7 @@ function getDataFromApi(baseUrl, searchKey, searchTerm, callback) {
   // console.log(baseUrl, searchTerm, callback);
   $.ajax(settings);
 }
+
 
 /**
  * 3. Look up similar common names and Taxonomic Serial Numbers (TSNs) at ITIS from common name input by user
@@ -99,6 +114,7 @@ function organizeCommonNamesAndTsns(data) {
   return;
 }
 
+
 // 6. Display multiple names that are similar to the one the user entered.
 // This function gets called if the common name the user entered does not precisely match any in the ITIS database or if the user clicks the ___ button to show similar names.
 function displayNameAlternatives(namesTsns) {
@@ -123,6 +139,7 @@ function displayNameAlternatives(namesTsns) {
   }
 }
 
+
 /**
  * 7. Call ITIS API to look up scientific name.
  * Note: Callback function is extractScientificNameAndKingdom. I pass it here because I may end up calling this function from more than one other function, in which case the callback would change.
@@ -138,6 +155,7 @@ function findScientificNameFromTsn(tsn, callback) {
     getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/getScientificNameFromTSN", "tsn", tsn, callback);
   }
 }
+
 
 /**
  * 8. Extract kingdom and scientific name from API result
@@ -177,6 +195,7 @@ function addSighting(sightingRecord) {
   });
 }
 
+
 function findSingleSighting(Id) {
   // window.test = Id;
   console.log("Found sighting: " + Id);
@@ -188,6 +207,7 @@ function findSingleSighting(Id) {
     contentType: "application/json"
   });
 }
+
 
 function populateViewForm(data) {
   console.log("Inside populateViewForm with data: ", data);
@@ -201,12 +221,15 @@ function populateViewForm(data) {
   $("#js-comments").val(data.creatureSightings.comments);
 }
 
+
 function removeItem(id, screenObjToRemove) {
   console.log("Inside removeItem. Here we need to call delete and also remove the item from the screen.");
   console.log("data: ", screenObjToRemove);
   console.log("id: ", id);
   screenObjToRemove.parent().remove();
 }
+
+
 
 /**
  * 2. Handle user action events
@@ -238,48 +261,66 @@ function handleUserActions() {
   });
 
   $("#js-show-list").on("click", function(e) {
-    e.preventDefault();
-    console.log("Inside #js-show-list click event.");
-    populateList();
-  });
+  e.preventDefault();
+  console.log("Inside #js-show-list click event.");
+  populateList();
+});
+
 
   $("#js-save").on("click", function(e) {
-    e.preventDefault();
-    addSighting({
-      tsn: $("#js-tsn").val(),
-      commonName: $("#js-common-name").val(),
-      scientificName: $("#js-scientific-name").val(),
-      kingdom: $("#js-kingdom").val(),
-      dateSighted: $("#js-date-sighted").val(),
-      timeSighted: $("#js-time-sighted").val(),
-      location: $("#js-location").val(),
-      byWhomSighted: $("#js-by-whom").val(),
-      comments: $("#js-comments").val()
-    });
-  });
+  e.preventDefault();
+  const record = {
+    tsn: $("#js-tsn").val(),
+    commonName: $("#js-common-name").val(),
+    scientificName: $("#js-scientific-name").val(),
+    location: $("#js-location").val(),
+    byWhomSighted: $("#js-by-whom").val(),
+    comments: $("#js-comments").val()
+  };
+  if (STORE.isCreate) {
+    addSighting(record);
+  } else {
+    updateSighting(record);
+  }
+});
+
 
   $("#js-list").on("click", "#js-view", e => {
-    e.preventDefault();
-    console.log("Inside click event for View/Update with data-id: ", e.target.getAttribute("data-id"));
-    findSingleSighting(e.target.getAttribute("data-id"));
-  });
+  e.preventDefault();
+  console.log("Inside click event for View/Update with data-id: ", e.target.getAttribute("data-id"));
+  const id = e.target.getAttribute("data-id");
+  findSingleSighting(id);
+  STORE.isCreate = false;
+  STORE.updateId = id;
+});
+
 
   $("#js-list").on("click", "#js-delete", function(e) {
-    e.preventDefault();
-    // console.log("Delete: ", e.target.getAttribute("data-id"));
-    console.log("Delete: ", $(this));
-    if (confirm("Delete record for " + e.target.getAttribute("data-id") + "?")) {
-      let id = e.target.getAttribute("data-id");
-      const screenObj = $(this);
-      $.ajax({
-        method: "DELETE",
-        url: "http://localhost:8080/" + id, // Change this URL
-        success: function(data) {
-          removeItem(e.target.getAttribute("data-id"), screenObj);
-        }
-      });
-    }
-  });
+  e.preventDefault();
+  // console.log("Delete: ", e.target.getAttribute("data-id"));
+  console.log("Delete: ", $(this));
+  if (confirm("Delete record for " + e.target.getAttribute("data-id") + "?")) {
+    let id = e.target.getAttribute("data-id");
+    const screenObj = $(this);
+    $.ajax({
+      method: "DELETE",
+      url: "http://localhost:8080/" + id, // Change this URL
+      success: function(data) {
+        removeItem(e.target.getAttribute("data-id"), screenObj);
+      },
+      dataType: "json",
+      contentType: "application/json"
+    });
+  }
+});
+
+
+  $("#js-clear").on("click", e => {
+  // e.preventDefault();
+  $("input").val("");
+  STORE.isCreate = true;
+});
+
 }
 
 // 1. Start when document is ready

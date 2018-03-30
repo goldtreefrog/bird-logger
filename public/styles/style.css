@@ -7,39 +7,75 @@ h3 {
 button {
   color: white;
   background-color: #9a2103;
-  border: 1px solid #3c0c01;
+  border: 2px solid #3c0c01;
   padding: 5px;
-  font-weight: 700; }
-
-a {
-  padding: 2px 5px;
-  color: white;
-  background-color: #000099;
-  border: 2px solid white; }
+  font-weight: 700;
+  border-radius: 15px;
+  box-shadow: 2px 2px 4px #251e11, 2px 2px 4px #887757; }
 
 label {
-  clear: left;
-  float: left;
-  width: 20%; }
+  display: block;
+  width: 100%; }
 
 input,
-form p {
-  float: left;
-  width: 60%; }
+form p,
+button.right-col {
+  width: 100%;
+  line-height: 1em;
+  margin: 0.5em 0; }
 
-form button {
-  width: 19%;
-  clear: left;
-  float: right; }
-
-button.ctr {
+button.right-col {
+  clear: both;
   display: block;
-  float: none;
   margin-left: auto;
   margin-right: auto;
-  border: 5px sold purple; }
+  width: 70%; }
 
-@media only screen and (min-width: 649px) {
+.ctr {
+  text-align: center; }
+  .ctr button {
+    display: inline-block;
+    margin: 1.5% 0.5%;
+    width: 70%; }
+
+nav#navi-h {
+  width: 100%;
+  text-align: center;
+  padding-bottom: 1px; }
+  nav#navi-h a {
+    margin: 10px 1px;
+    padding: 3px 0.5em 2px 0.75em;
+    color: white;
+    background-color: #000099;
+    border-top-left-radius: 25px;
+    border-bottom-right-radius: 10px;
+    text-decoration: none; }
+
+@media only screen and (min-width: 440px) {
+  .ctr {
+    clear: both;
+    width: 70%;
+    margin-left: 21%; }
+    .ctr button {
+      width: 48%; } }
+
+@media only screen and (min-width: 628px) {
+  label {
+    clear: left;
+    float: left;
+    width: 20%;
+    text-align: right;
+    margin: 0.5em 1% 0.5em 0; }
+  input,
+  form p,
+  button.right-col {
+    clear: both;
+    width: 70%;
+    margin: 0.5em 0 0.5em 1%; }
+  button.right-col {
+    margin-left: 21%; } }
+
+@media only screen and (min-width: 900px) {
   body {
     width: 95%; }
   nav li {
@@ -54,38 +90,34 @@ button.ctr {
       display: inline-block;
       clear: none;
       width: auto; }
-  header#intro img {
-    width: 99%; }
-  main.enter-data button {
-    padding-top: 5px;
-    padding-bottom: 5px; }
-  main.enter-data form.enter-data {
+  label {
+    float: left;
+    clear: left; }
+  input,
+  form p {
+    clear: right;
+    float: left;
+    width: 58%; }
+  button.right-col {
+    display: block;
+    clear: right;
+    margin-left: 2%;
+    float: left;
+    width: 17%; }
+  .ctr {
     width: 100%;
-    padding: 0;
-    margin: 0; }
-    main.enter-data form.enter-data fieldset#bird-names {
-      width: 70%;
-      margin-right: 5px;
-      margin-left: 5px; }
-  main.enter-data #spelling-area {
-    padding-top: 0;
-    padding-bottom: 0; }
-    main.enter-data #spelling-area #spelling-choices {
-      width: auto; }
-    main.enter-data #spelling-area #more-container {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center; }
+    .ctr button {
       display: inline-block;
-      width: 19%; }
-    main.enter-data #spelling-area #more-words {
-      margin-right: 0; }
-  main.enter-data #snippet-area {
-    margin: 10px 0 0 10px; } }
-
-@media only screen and (min-width: 773px) {
-  body {
-    width: 80%; }
-  nav li {
-    width: 85%; }
-  header#intro img {
-    width: 90%; } }
+      float: none;
+      margin-left: 0.5%;
+      margin-right: 0.5%;
+      width: 17%; }
+    .ctr .bottom-left {
+      margin-right: 2%; }
+    .ctr .bottom-right {
+      margin-left: 2%; } }
 
 /*# sourceMappingURL=style.css.map */
