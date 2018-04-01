@@ -69,7 +69,7 @@ router.post("/", jsonParser, (req, res) => {
 
   if (message > "") {
     message = message.slice(0, -2); // remove last comma and space
-    message = "Please fill in these required fields: " + message;
+    message = "Please fill in required fields: " + message;
     console.log(message);
     return res.status(400).send(message);
   }

@@ -12,6 +12,9 @@ function showSection(showSection) {
   }
   console.log("section: ", section);
   $(section).css("display", "block");
+
+  // Reset message
+  resetFeedback();
 }
 
 function displayMessage(errText) {
@@ -19,6 +22,11 @@ function displayMessage(errText) {
   $("#js-feedback").html(errText);
   console.log(errText);
 }
+
+function clearFields() {
+  $("input").val("");
+}
+
 
 function resetFeedback() {
   $("#js-feedback").css("visibility", "hidden");
@@ -58,16 +66,23 @@ function insertList(data) {
   console.log("Inside insertList");
   console.log(data);
   showSection("display-data");
+  const listTitleHtml = `<li><span class="sighting-list title-header">Common Name</span> <span class="sighting-list title-header">Scientific Name</span> <span class="sighting-list title-header">Date Sighted</span> <span class="sighting-list title-header time">Time</span> <span class="sighting-list title-header">Location</span> <span class="sighting-list title-header">Comments</span>
+</li>
+`;
   const listHtml = data.creatureSightings
     .map(sighting => {
-      return `<li><span class="sighting-list">${sighting.commonName}</span> <span class="sighting-list">${sighting.scientificName}</span> <span class="sighting-list">${sighting.dateSighted}</span> <span class="sighting-list">${sighting.timeSighted}</span> <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span>
+      return `<li><span class="sighting-list common-name">${sighting.commonName}</span> <span class="sighting-list scientific-name">${sighting.scientificName}</span> <span class="sighting-list">${sighting.dateSighted}</span> <span class="sighting-list time">${sighting.timeSighted}</span> <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span>
   <button class="sighting-list view"  id="js-view" data-id="${sighting._id}">View/Update</button>
   <button class="sighting-list delete" id="js-delete" data-id="${sighting._id}">Delete</button>
 </li>
 `;
     })
     .join("");
-  $("#js-list").html(listHtml);
+
+  $("#js-list").html(listTitleHtml + listHtml);
+
+  // Clear fields in form for adding or updating a single sighting
+  clearFields();
 }
 
 
@@ -364,7 +379,7 @@ $("form").on("submit", function(e) {
 
   $("#js-clear").on("click", e => {
   // e.preventDefault();
-  $("input").val("");
+  clearFields();
   STORE.isCreate = true;
 });
 

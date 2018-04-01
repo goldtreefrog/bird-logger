@@ -23,19 +23,22 @@ button.right-col {
   line-height: 1em;
   margin: 0.5em 0; }
 
-fieldset.bird-names p,
-fieldset.bird-names .feedback {
-  display: block;
-  width: 100%;
-  line-height: 1em;
-  margin: 0.5em 0;
-  padding: 0.5em; }
-
-fieldset.bird-names .feedback {
-  background-color: #ffaa99;
-  font-weight: bolder;
-  height: 1em;
-  visibility: hidden; }
+fieldset.bird-names .instructions {
+  margin: 0;
+  padding: 0; }
+  fieldset.bird-names .instructions p,
+  fieldset.bird-names .instructions .feedback {
+    display: block;
+    width: 100%;
+    line-height: 1em;
+    margin: 0.5em 0;
+    padding: 0.5em;
+    font-weight: bold; }
+  fieldset.bird-names .instructions .feedback {
+    background-color: #ffaa99;
+    height: 1em;
+    visibility: hidden;
+    text-align: center; }
 
 button.right-col {
   clear: both;
@@ -63,6 +66,26 @@ nav#navi-h {
     border-top-left-radius: 25px;
     border-bottom-right-radius: 10px;
     text-decoration: none; }
+
+section.display-data ul {
+  list-style-type: none; }
+  section.display-data ul .title-header {
+    font-weight: bolder; }
+  section.display-data ul .sighting-list {
+    display: inline-block;
+    width: 6em;
+    margin: 2px 1px;
+    vertical-align: top; }
+  section.display-data ul .common-name,
+  section.display-data ul .scientific-name {
+    word-wrap: break-word; }
+  section.display-data ul .time {
+    width: 3em; }
+  section.display-data ul .view,
+  section.display-data ul .delete {
+    font-size: smaller; }
+  section.display-data ul .view {
+    width: 7em; }
 
 section.name-choices,
 section.display-data {
@@ -107,13 +130,13 @@ section.display-data {
       display: inline-block;
       clear: none;
       width: auto; }
-  fieldset.bird-names .feedback {
+  fieldset.bird-names .instructions .feedback {
     display: inline-block;
-    width: 58%;
+    width: auto;
     float: right; }
-  fieldset.bird-names p {
+  fieldset.bird-names .instructions p {
     display: inline-block;
-    width: 40%; }
+    width: 20em; }
   label {
     float: left;
     clear: left; }
@@ -141,6 +164,12 @@ section.display-data {
     .ctr .bottom-left {
       margin-right: 2%; }
     .ctr .bottom-right {
-      margin-left: 2%; } }
+      margin-left: 2%; }
+  section.display-data ul .sighting-list {
+    width: 12%; }
+  section.display-data ul .time {
+    width: 5%; }
+  section.display-data ul .view {
+    width: 12%; } }
 
 /*# sourceMappingURL=style.css.map */
