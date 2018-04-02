@@ -1,7 +1,7 @@
 "use strict";
 
 const STORE = { isCreate: true };
-
+// include('./../jsPartials/_datePickerDefaults.js')
 function showSection(showSection) {
   $("section").css("display", "none");
   let section;
@@ -176,7 +176,6 @@ function displayNameAlternatives(namesTsns) {
   }
 }
 
-
 /**
  * 7. Call ITIS API to look up scientific name.
  * Note: Callback function is extractScientificNameAndKingdom. I pass it here because I may end up calling this function from more than one other function, in which case the callback would change.
@@ -260,6 +259,7 @@ function findSingleSighting(id) {
 
 function populateViewForm(data) {
   console.log("Inside populateViewForm with data: ", data);
+  toggleSaveUpdate("update");
   showSection("enter-data");
   $("#js-common-name").val(data.creatureSightings.commonName);
   $("#js-scientific-name").val(data.creatureSightings.scientificName);
@@ -277,6 +277,16 @@ function removeItem(id, screenObjToRemove) {
   console.log("data: ", screenObjToRemove);
   console.log("id: ", id);
   screenObjToRemove.parent().remove();
+}
+
+
+function toggleSaveUpdate(outcome) {
+  let outcomeL = outcome.toLowerCase();
+  let outcomeC = outcomeL.substr(0, 1).toUpperCase() + outcomeL.substr(1);
+
+  $("#js-save").text(outcomeC);
+  $("#js-save").attr("name", outcomeL);
+  $("#js-save").attr("value", outcomeL);
 }
 
 
@@ -311,6 +321,9 @@ function handleUserActions() {
   });
 
   $("#js-add-sighting").on("click", e => {
+  e.preventDefault();
+  clearFields();
+  toggleSaveUpdate("save");
   showSection("enter-data");
 });
 
@@ -380,6 +393,7 @@ $("form").on("submit", function(e) {
   $("#js-clear").on("click", e => {
   // e.preventDefault();
   clearFields();
+  toggleSaveUpdate("save");
   STORE.isCreate = true;
 });
 
@@ -389,6 +403,12 @@ $("form").on("submit", function(e) {
   resetFeedback();
 });
 
+
+  // include('./../jsPartials/_dateFocus.js')
+
+  // include('./../jsPartials/_dateClick.js')
+
+  // include('./../jsPartials/_dateFocusout.js')
 }
 
 // 1. Start when document is ready
