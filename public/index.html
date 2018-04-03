@@ -11,6 +11,7 @@
     <title>Creature Watcher's Creature Log</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=EB+Garamond|Ubuntu" rel="stylesheet" />
+    <link href="jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="styles/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
@@ -38,7 +39,7 @@
             <input type="text" id="js-kingdom" name="kingdom" accesskey="k" data-lpignore="true" />
             <div class="date">
               <label for="date-sighted">Date Sighted:</label>
-              <input type="date" id="js-date-sighted" name="date-sighted" accesskey="d" required="required" />
+              <input type="text" id="datepicker" name="date-sighted" accesskey="d" required="required" class="js-date-sighted" />
             </div>
             <div class="time">
               <label for="time-sighted">Time:</label>
@@ -69,6 +70,7 @@
       <summary>© 2017 Margaret Blauvelt</summary>
     </footer>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="jquery-ui/jquery-ui.min.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

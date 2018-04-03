@@ -1,7 +1,6 @@
 "use strict";
 
 const STORE = { isCreate: true };
-// include('./../jsPartials/_datePickerDefaults.js')
 function showSection(showSection) {
   $("section").css("display", "none");
   let section;
@@ -55,12 +54,15 @@ function updateSighting(sightingRecord) {
     data: JSON.stringify(sightingRecord),
     success: function(data) {
       console.log("Success!!!");
+      displayMessage(sightingRecord.commonName + " record updated successfully.");
+    },
+    error: function(err) {
+      displayMessage(err.responseText);
     },
     dataType: "json",
     contentType: "application/json"
   });
 }
-
 
 function insertList(data) {
   console.log("Inside insertList");
@@ -69,11 +71,14 @@ function insertList(data) {
   const listTitleHtml = `<li><span class="sighting-list title-header">Common Name</span> <span class="sighting-list title-header">Scientific Name</span> <span class="sighting-list title-header">Date Sighted</span> <span class="sighting-list title-header time">Time</span> <span class="sighting-list title-header">Location</span> <span class="sighting-list title-header">Comments</span>
 </li>
 `;
+  console.log("before testDate created");
   const listHtml = data.creatureSightings
     .map(sighting => {
-      return `<li><span class="sighting-list common-name">${sighting.commonName}</span> <span class="sighting-list scientific-name">${sighting.scientificName}</span> <span class="sighting-list">${sighting.dateSighted}</span> <span class="sighting-list time">${sighting.timeSighted}</span> <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span>
+      // Ignore the time so split at "T"
+      let dateSighted = $.datepicker.formatDate("mm/dd/y", $.datepicker.parseDate("yy-mm-dd", sighting.dateSighted.split("T")[0]));
+      return `<li><span class="sighting-list common-name">${sighting.commonName}</span> <span class="sighting-list scientific-name">${sighting.scientificName}</span> <span class="sighting-list">${dateSighted}</span> <span class="sighting-list time">${sighting.timeSighted}</span> <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span>
   <button class="sighting-list view"  id="js-view" data-id="${sighting._id}">View/Update</button>
-  <button class="sighting-list delete" id="js-delete" data-id="${sighting._id}">Delete</button>
+  <button class="sighting-list delete" id="js-delete" data-id="${sighting._id}" data-common-name="${sighting.commonName}">Delete</button>
 </li>
 `;
     })
@@ -123,6 +128,9 @@ function organizeCommonNamesAndTsns(data) {
 
   if (data.commonNames.length === 1 && !data.commonNames[0]) {
     console.log(`No matching common names were found.`);
+    displayMessage("No match in database for '" + $("#js-common-name").val() + ".'");
+    // $("#js-feedback").html("No match for common name entered.");
+    // $("#js-feedback").css("visibility", "visible");
     return;
   }
 
@@ -242,7 +250,6 @@ function addSighting(sightingRecord) {
   });
 }
 
-
 function findSingleSighting(id) {
   // window.test = id;
   showSection("enter-data");
@@ -256,7 +263,6 @@ function findSingleSighting(id) {
   });
 }
 
-
 function populateViewForm(data) {
   console.log("Inside populateViewForm with data: ", data);
   toggleSaveUpdate("update");
@@ -264,13 +270,15 @@ function populateViewForm(data) {
   $("#js-common-name").val(data.creatureSightings.commonName);
   $("#js-scientific-name").val(data.creatureSightings.scientificName);
   $("#js-kingdom").val(data.creatureSightings.kingdom);
-  $("#js-date-sighted").val(data.creatureSightings.dateSighted);
+  // $(".js-date-sighted").val(data.creatureSightings.dateSighted);
+  $(".js-date-sighted").val(
+    $.datepicker.formatDate("mm/dd/yy", $.datepicker.parseDate("yy-mm-dd", data.creatureSightings.dateSighted.split("T")[0]))
+  );
   $("#js-time-sighted").val(data.creatureSightings.timeSighted);
   $("#js-location").val(data.creatureSightings.location);
   $("#js-by-whom").val(data.creatureSightings.byWhomSighted);
   $("#js-comments").val(data.creatureSightings.comments);
 }
-
 
 function removeItem(id, screenObjToRemove) {
   console.log("Inside removeItem. Here we need to call delete and also remove the item from the screen.");
@@ -279,7 +287,6 @@ function removeItem(id, screenObjToRemove) {
   screenObjToRemove.parent().remove();
 }
 
-
 function toggleSaveUpdate(outcome) {
   let outcomeL = outcome.toLowerCase();
   let outcomeC = outcomeL.substr(0, 1).toUpperCase() + outcomeL.substr(1);
@@ -287,9 +294,14 @@ function toggleSaveUpdate(outcome) {
   $("#js-save").text(outcomeC);
   $("#js-save").attr("name", outcomeL);
   $("#js-save").attr("value", outcomeL);
+
+  STORE.isCreate = outcomeL === "save";
 }
 
-
+function datePickerSetup() {
+  // $.datepicker.setDefaults($.extend($.datepicker.regional[""]));
+  $("#datepicker").datepicker({ maxDate: "0" });
+}
 
 /**
  * 2. Handle user action events
@@ -325,6 +337,7 @@ function handleUserActions() {
   clearFields();
   toggleSaveUpdate("save");
   showSection("enter-data");
+  // STORE.isCreate = true;
 });
 
 
@@ -343,7 +356,7 @@ $("form").on("submit", function(e) {
     commonName: $("#js-common-name").val(),
     scientificName: $("#js-scientific-name").val(),
     kingdom: $("#js-kingdom").val(),
-    dateSighted: $("#js-date-sighted").val(),
+    dateSighted: $(".js-date-sighted").val(),
     timeSighted: $("#js-time-sighted").val(),
     location: $("#js-location").val(),
     byWhomSighted: $("#js-by-whom").val(),
@@ -365,23 +378,24 @@ $("form").on("submit", function(e) {
   console.log("Inside click event for View/Update with data-id: ", e.target.getAttribute("data-id"));
   const id = e.target.getAttribute("data-id");
   findSingleSighting(id);
-  STORE.isCreate = false;
+  // STORE.isCreate = false;
   STORE.updateId = id;
 });
 
 
   $("#js-list").on("click", "#js-delete", function(e) {
   e.preventDefault();
-  // console.log("Delete: ", e.target.getAttribute("data-id"));
   console.log("Delete: ", $(this));
-  if (confirm("Delete record for " + e.target.getAttribute("data-id") + "?")) {
+  if (confirm("Delete record for " + e.target.getAttribute("data-common-name") + "?")) {
     let id = e.target.getAttribute("data-id");
+    let commonName = e.target.getAttribute("data-common-name");
     const screenObj = $(this);
     $.ajax({
       method: "DELETE",
       url: "http://localhost:8080/" + id, // Change this URL
       success: function(data) {
         removeItem(e.target.getAttribute("data-id"), screenObj);
+        // displayMessage(commonName + " record deleted successfully.");
       },
       dataType: "json",
       contentType: "application/json"
@@ -394,7 +408,7 @@ $("form").on("submit", function(e) {
   // e.preventDefault();
   clearFields();
   toggleSaveUpdate("save");
-  STORE.isCreate = true;
+  // STORE.isCreate = true;
 });
 
 
@@ -414,5 +428,6 @@ $("form").on("submit", function(e) {
 // 1. Start when document is ready
 $(document).ready(function() {
   // console.log("You are running app.js in Bird Logger");
-  handleUserActions();
+    datePickerSetup();
+    handleUserActions();
 });

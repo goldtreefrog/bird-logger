@@ -14,6 +14,10 @@ mongoose.Promise = global.Promise;
 
 const app = express();
 
+// Serve jquery-ui folder as static files so HTML can access even though in the parent directory.
+// HTML will name the path like this: <script src="jquery-ui/jquery-ui.min.js">
+app.use("/jquery-ui", express.static(__dirname + /jquery-ui-1.12.1.custom/));
+
 // Log all requests
 app.all("/", logRequest);
 

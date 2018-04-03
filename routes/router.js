@@ -8,6 +8,36 @@ const jsonParser = bodyParser.json();
 
 const { CreatureSighting } = require("./../models/models");
 
+function checkForBadData(req) {
+  // const requiredFields = ["scientificName", "dateSighted", "location", "byWhomSighted"];
+  const requiredFields = { scientificName: "Scientific Name", dateSighted: "Date Sighted", location: "Location", byWhomSighted: "By Whom" };
+  console.log(requiredFields);
+
+  let message = "";
+
+  for (var k in requiredFields) {
+    if (requiredFields.hasOwnProperty(k)) {
+      // alert("Key is " + k + ", value is" + target[k]);
+      if (!(k in req.body)) {
+        message = `Missing \`${k}\` in request body`;
+        // return res.status(400).send(message);
+      } else {
+        if (req.body[k].trim() === "") {
+          message += requiredFields[k] + ", ";
+        }
+      }
+    }
+  }
+
+  if (message > "") {
+    message = message.slice(0, -2); // remove last comma and space
+    message = "Please fill in required fields: " + message;
+    console.log(message);
+    // return res.status(400).send(message);
+  }
+  return message;
+} // End of checkForBadData
+
 router.use(express.static("public"));
 
 router.get("/creature-sightings", jsonParser, (req, res) => {
@@ -47,33 +77,10 @@ router.get("/show-info", (req, res) => {
 // If not, log an error and return a 400 status code.
 // If okay, add new item to CreatureSightings and return code 201.
 router.post("/", jsonParser, (req, res) => {
-  // const requiredFields = ["scientificName", "dateSighted", "location", "byWhomSighted"];
-  const requiredFields = { scientificName: "Scientific Name", dateSighted: "Date Sighted", location: "Location", byWhomSighted: "By Whom" };
-  console.log(requiredFields);
-
-  let message = "";
-
-  for (var k in requiredFields) {
-    if (requiredFields.hasOwnProperty(k)) {
-      // alert("Key is " + k + ", value is" + target[k]);
-      if (!(k in req.body)) {
-        message = `Missing \`${k}\` in request body`;
-        return res.status(400).send(message);
-      } else {
-        if (req.body[k].trim() === "") {
-          message += requiredFields[k] + ", ";
-        }
-      }
-    }
-  }
-
-  if (message > "") {
-    message = message.slice(0, -2); // remove last comma and space
-    message = "Please fill in required fields: " + message;
-    console.log(message);
+  let message = checkForBadData(req);
+  if (!(message === "")) {
     return res.status(400).send(message);
   }
-
   const item = CreatureSighting.create({
     tsn: req.body.tsn,
     commonName: req.body.commonName,
@@ -97,6 +104,11 @@ router.post("/", jsonParser, (req, res) => {
 router.put("/:id", jsonParser, (req, res) => {
   // res.json({ message: "Inside put" });
   console.log("req.body :", req.body);
+  let message = checkForBadData(req);
+  if (!(message === "")) {
+    return res.status(400).send(message);
+  }
+
   CreatureSighting.findByIdAndUpdate(req.params.id, req.body, function(err, record) {
     if (err) return handleError(err);
     res.send(record);
