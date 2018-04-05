@@ -44,6 +44,11 @@ fieldset.bird-names .instructions {
     visibility: hidden;
     text-align: center; }
 
+p.asterisk {
+  margin: 0 0 1em 0.5em;
+  padding: 0;
+  line-height: 1em; }
+
 button.right-col {
   clear: both;
   display: block;
