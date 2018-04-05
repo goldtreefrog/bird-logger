@@ -8,9 +8,22 @@ const jsonParser = bodyParser.json();
 
 const { CreatureSighting } = require("./../models/models");
 
+router.use(express.static("public"));
+
+function getRequiredFields() {
+  return {
+    commonName: "Common Name",
+    scientificName: "Scientific Name",
+    dateSighted: "Date Sighted",
+    location: "Location",
+    byWhomSighted: "By Whom"
+  };
+}
+
 function checkForBadData(req) {
   // const requiredFields = ["scientificName", "dateSighted", "location", "byWhomSighted"];
-  const requiredFields = { scientificName: "Scientific Name", dateSighted: "Date Sighted", location: "Location", byWhomSighted: "By Whom" };
+  const requiredFields = getRequiredFields();
+  console.log("Got required fields: ooooooooooooooooooooooooooooooooo oo");
   console.log(requiredFields);
 
   let message = "";
@@ -37,8 +50,6 @@ function checkForBadData(req) {
   }
   return message;
 } // End of checkForBadData
-
-router.use(express.static("public"));
 
 router.get("/creature-sightings", jsonParser, (req, res) => {
   CreatureSighting.find()
@@ -92,7 +103,7 @@ router.post("/", jsonParser, (req, res) => {
     byWhomSighted: req.body.byWhomSighted,
     comments: req.body.comments
   })
-    .then(function(sighting) {
+    .then(sighting => {
       res.status(201).json(sighting);
     })
     .catch(function(err) {
@@ -102,17 +113,49 @@ router.post("/", jsonParser, (req, res) => {
 });
 
 router.put("/:id", jsonParser, (req, res) => {
-  // res.json({ message: "Inside put" });
-  console.log("req.body :", req.body);
-  let message = checkForBadData(req);
-  if (!(message === "")) {
+  let message = "";
+  const requiredFields = getRequiredFields();
+  console.log("req.body is: ");
+  console.log(req.body);
+  console.log("Inside put. Key, values are: iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii---!!!");
+  // Works in ES2016 and later:
+  Object.keys(req.body).forEach(function(key) {
+    console.log(key, req.body[key]);
+    if (req.body[key].trim() === "" && key in requiredFields) {
+      message += key + ", ";
+    } else {
+      console.log("Value: vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+      console.log(req.body[key]);
+    }
+  });
+
+  if (message.length > 0) {
+    message = "Please fill in required fields: " + message;
     return res.status(400).send(message);
   }
 
-  CreatureSighting.findByIdAndUpdate(req.params.id, req.body, function(err, record) {
-    if (err) return handleError(err);
-    res.send(record);
-  });
+  // const item = CreatureSighting.findByIdAndUpdate(req.params.id, req.body, function(err, record) {
+  // if (err) return handleError(err);
+  // res.send(record);
+  // res.status(204);
+  //   console.log("record: ", record);
+  //   return record;
+  // })
+  //
+  // Changed to promise by removing optional function. Then .then becomes the optional function??
+  // Anyway, the test totally worked except, again, for saying Error: Timeout of 2000 ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, be sure it resolves.
+  const item = CreatureSighting.findByIdAndUpdate(req.params.id, req.body)
+    .then(record => {
+      res.status(204).end();
+      // res.status(204).json({ message: "Success!" });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({
+        message: `Internal server error. Record not updated. Error: ${err}`
+      });
+      // done(err);
+    });
 });
 
 router.delete("/:id", (req, res) => {
