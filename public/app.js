@@ -93,8 +93,13 @@ function insertList(data) {
 
 // 4. Generic call to ITIS API
 function getDataFromApi(baseUrl, searchKey, searchTerm, callback) {
+  console.log("Inside getDataFromApi, callback name: ", callback);
   const settings = {
     url: baseUrl + "?" + searchKey + "=" + searchTerm,
+    cache: true, // added
+    jsonp: "jsonp", // added
+    dataType: "jsonp", // added
+    // jsonpCallback: callback, // did not work - at least as I have it all coded
     type: "GET",
     success: callback
   };
