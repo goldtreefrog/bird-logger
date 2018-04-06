@@ -2,7 +2,8 @@ button,
 h1,
 h2,
 h3 {
-  font-family: "Ubuntu", sans-serif; }
+  font-family: "Ubuntu", sans-serif;
+}
 
 button {
   color: white;
@@ -11,102 +12,126 @@ button {
   padding: 5px;
   font-weight: 700;
   border-radius: 15px;
-  box-shadow: 2px 2px 4px #251e11, 2px 2px 4px #887757; }
+  box-shadow: 2px 2px 4px #251e11, 2px 2px 4px #887757;
+}
 
 label {
   display: block;
-  width: 100%; }
+  width: 100%;
+}
 
 input,
 button.right-col {
   width: 100%;
   line-height: 1em;
-  margin: 0.5em 0; }
+  margin: 0.5em 0;
+}
 
 div.date input,
 div.time input {
-  max-width: 9em; }
+  max-width: 9em;
+}
 
 fieldset.bird-names .instructions {
   margin: 0;
-  padding: 0; }
-  fieldset.bird-names .instructions p,
-  fieldset.bird-names .instructions .feedback {
-    display: block;
-    width: 100%;
-    line-height: 1em;
-    margin: 0.5em 0;
-    padding: 0.5em;
-    font-weight: bold; }
-  fieldset.bird-names .instructions .feedback {
-    background-color: #ffaa99;
-    height: 1em;
-    visibility: hidden;
-    text-align: center; }
+  padding: 0;
+}
+fieldset.bird-names .instructions p,
+fieldset.bird-names .instructions .feedback {
+  display: block;
+  width: 100%;
+  line-height: 1em;
+  margin: 0.5em 0;
+  padding: 0.5em;
+  font-weight: bold;
+}
+fieldset.bird-names .instructions .feedback {
+  background-color: #ffaa99;
+  height: 1em;
+  visibility: hidden;
+  text-align: center;
+}
 
 p.asterisk {
   margin: 0 0 1em 0.5em;
   padding: 0;
-  line-height: 1em; }
+  line-height: 1em;
+}
 
 button.right-col {
   clear: both;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 70%; }
+  width: 70%;
+}
 
 .ctr {
-  text-align: center; }
-  .ctr button {
-    display: inline-block;
-    margin: 1.5% 0.5%;
-    width: 70%; }
+  text-align: center;
+}
+.ctr button {
+  display: inline-block;
+  margin: 1.5% 0.5%;
+  width: 70%;
+}
 
 nav#navi-h {
   width: 100%;
   text-align: center;
-  padding-bottom: 1px; }
-  nav#navi-h a {
-    margin: 10px 1px;
-    padding: 3px 0.5em 2px 0.75em;
-    color: white;
-    background-color: #000099;
-    border-top-left-radius: 25px;
-    border-bottom-right-radius: 10px;
-    text-decoration: none; }
+  padding-bottom: 1px;
+}
+nav#navi-h a {
+  margin: 10px 1px;
+  padding: 3px 0.5em 2px 0.75em;
+  color: white;
+  background-color: #000099;
+  border-top-left-radius: 25px;
+  border-bottom-right-radius: 10px;
+  text-decoration: none;
+}
 
 section.display-data ul {
-  list-style-type: none; }
-  section.display-data ul .title-header {
-    font-weight: bolder; }
-  section.display-data ul .sighting-list {
-    display: inline-block;
-    width: 6em;
-    margin: 2px 1px;
-    vertical-align: top; }
-  section.display-data ul .common-name,
-  section.display-data ul .scientific-name {
-    word-wrap: break-word; }
-  section.display-data ul .time {
-    width: 3em; }
-  section.display-data ul .view,
-  section.display-data ul .delete {
-    font-size: smaller; }
-  section.display-data ul .view {
-    width: 7em; }
+  list-style-type: none;
+}
+section.display-data ul .title-header {
+  font-weight: bolder;
+}
+section.display-data ul .sighting-list {
+  display: inline-block;
+  width: 6em;
+  margin: 2px 1px;
+  vertical-align: top;
+}
+section.display-data ul .common-name,
+section.display-data ul .scientific-name {
+  word-wrap: break-word;
+}
+section.display-data ul .time {
+  width: 3em;
+}
+section.display-data ul .view,
+section.display-data ul .delete {
+  font-size: smaller;
+}
+section.display-data ul .view {
+  width: 7em;
+}
 
 section.name-choices,
 section.display-data {
-  display: none; }
+  display: none;
+}
 
 @media only screen and (min-width: 440px) {
   .ctr {
     clear: both;
     width: 70%;
-    margin-left: 21%; }
-    .ctr button {
-      width: 48%; } }
+    margin-left: 21%;
+  }
+  .ctr button {
+    width: 48%;
+  }
+}
 
 @media only screen and (min-width: 628px) {
   label {
@@ -114,75 +139,97 @@ section.display-data {
     float: left;
     width: 20%;
     text-align: right;
-    margin: 0.5em 1% 0.5em 0; }
+    margin: 0.5em 1% 0.5em 0;
+  }
   input,
   form p,
   button.right-col {
     clear: both;
     width: 70%;
-    margin: 0.5em 0 0.5em 1%; }
+    margin: 0.5em 0 0.5em 1%;
+  }
   label.time {
     float: left;
-    clear: both; }
+    clear: both;
+  }
   button.right-col {
-    margin-left: 22%; } }
+    margin-left: 22%;
+  }
+}
 
 @media only screen and (min-width: 900px) {
   body {
-    width: 95%; }
+    width: 95%;
+  }
   nav li {
     width: 95%;
     vertical-align: top;
-    height: 2.5em; }
-    nav li a {
-      display: inline-block;
-      border: none;
-      height: 2.5em; }
-    nav li span {
-      display: inline-block;
-      clear: none;
-      width: auto; }
+    height: 2.5em;
+  }
+  nav li a {
+    display: inline-block;
+    border: none;
+    height: 2.5em;
+  }
+  nav li span {
+    display: inline-block;
+    clear: none;
+    width: auto;
+  }
   fieldset.bird-names .instructions .feedback {
     display: inline-block;
     width: auto;
     min-width: 55%;
-    float: right; }
+    float: right;
+  }
   fieldset.bird-names .instructions p {
     display: inline-block;
-    width: 20em; }
+    width: 20em;
+  }
   label {
     float: left;
-    clear: left; }
+    clear: left;
+  }
   input {
     clear: right;
     float: left;
-    width: 58%; }
+    width: 58%;
+  }
   button.right-col {
     display: block;
     clear: right;
     margin-left: 2%;
     float: left;
-    width: 17%; }
+    width: 17%;
+  }
   .ctr {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    text-align: center; }
-    .ctr button {
-      display: inline-block;
-      float: none;
-      margin-left: 0.5%;
-      margin-right: 0.5%;
-      width: 17%; }
-    .ctr .bottom-left {
-      margin-right: 2%; }
-    .ctr .bottom-right {
-      margin-left: 2%; }
+    text-align: center;
+  }
+  .ctr button {
+    display: inline-block;
+    float: none;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    width: 17%;
+  }
+  .ctr .bottom-left {
+    margin-right: 2%;
+  }
+  .ctr .bottom-right {
+    margin-left: 2%;
+  }
   section.display-data ul .sighting-list {
-    width: 12%; }
+    width: 12%;
+  }
   section.display-data ul .time {
-    width: 5%; }
+    width: 5%;
+  }
   section.display-data ul .view {
-    width: 12%; } }
+    width: 12%;
+  }
+}
 
 /*# sourceMappingURL=style.css.map */
