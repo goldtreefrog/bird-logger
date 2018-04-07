@@ -26,7 +26,7 @@ function clearFields() {
   $("input").val("");
 }
 
-function resetFeedback() {
+         function resetFeedback() {
   $("#js-feedback").css("visibility", "hidden");
   $("#js-feedback").html("");
 }
@@ -67,17 +67,15 @@ function insertList(data) {
   console.log("Inside insertList");
   console.log(data);
   showSection("display-data");
-  const listTitleHtml = `<li><span class="sighting-list title-header">Common Name</span> <span class="sighting-list title-header">Scientific Name</span> <span class="sighting-list title-header">Date Sighted</span> <span class="sighting-list title-header time">Time</span> <span class="sighting-list title-header">Location</span> <span class="sighting-list title-header">Comments</span></li>`;
+  const listTitleHtml = `<li><span class="sighting-list title-header">Common Name</span> <span class="sighting-list title-header">Scientific Name</span> <span class="sighting-list title-header">Date Sighted</span> <span class="sighting-list title-header time">Time</span> <span class="sighting-list title-header">Location</span> <span class="sighting-list title-header">Comments</span>
+</li>
+`;
   console.log("before testDate created");
   const listHtml = data.creatureSightings
     .map(sighting => {
       // Ignore the time so split at "T"
       let dateSighted = $.datepicker.formatDate("mm/dd/y", $.datepicker.parseDate("yy-mm-dd", sighting.dateSighted.split("T")[0]));
-      return `<li><span class="sighting-list common-name">${sighting.commonName}</span> <span class="sighting-list scientific-name">${
-        sighting.scientificName
-      }</span> <span class="sighting-list">${dateSighted}</span> <span class="sighting-list time">${
-        sighting.timeSighted
-      }</span> <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span>
+      return `<li><span class="sighting-list common-name">${sighting.commonName}</span> <span class="sighting-list scientific-name">${sighting.scientificName}</span> <span class="sighting-list">${dateSighted}</span> <span class="sighting-list time">${sighting.timeSighted}</span> <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span>
   <button class="sighting-list view"  id="js-view" data-id="${sighting._id}">View/Update</button>
   <button class="sighting-list delete" id="js-delete" data-id="${sighting._id}" data-common-name="${sighting.commonName}">Delete</button>
 </li>
@@ -91,16 +89,15 @@ function insertList(data) {
   clearFields();
 }
 
+
 // 4. Generic call to ITIS API
 function getDataFromApi(baseUrl, searchKey, searchTerm, callback) {
-  console.log("Inside getDataFromApi, callback name: ", callback);
   const settings = {
     url: baseUrl + "?" + searchKey + "=" + searchTerm,
+    type: "GET",
     cache: true, // added
     jsonp: "jsonp", // added
     dataType: "jsonp", // added
-    // jsonpCallback: callback, // did not work - at least as I have it all coded
-    type: "GET",
     success: callback
   };
   console.log(settings.url);
@@ -198,6 +195,7 @@ function findScientificNameFromTsn(tsn, callback) {
     getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/getScientificNameFromTSN", "tsn", tsn, callback);
   }
 }
+
 
 /**
  * 8. Extract kingdom and scientific name from API result
@@ -321,80 +319,88 @@ function handleUserActions() {
   });
 
   $("#js-add-sighting").on("click", e => {
-    e.preventDefault();
-    clearFields();
-    toggleSaveUpdate("save");
-    showSection("enter-data");
-  });
+  e.preventDefault();
+  clearFields();
+  toggleSaveUpdate("save");
+  showSection("enter-data");
+});
+
 
   $("#js-show-list").on("click", function(e) {
-    e.preventDefault();
-    console.log("Inside #js-show-list click event.");
-    populateList();
-  });
+  e.preventDefault();
+  console.log("Inside #js-show-list click event.");
+  populateList();
+});
+
 
   $("form").on("submit", function(e) {
-    e.preventDefault();
-    const record = {
-      tsn: $("#js-tsn").val(),
-      commonName: $("#js-common-name").val(),
-      scientificName: $("#js-scientific-name").val(),
-      kingdom: $("#js-kingdom").val(),
-      dateSighted: $(".js-date-sighted").val(),
-      timeSighted: $("#js-time-sighted").val(),
-      location: $("#js-location").val(),
-      byWhomSighted: $("#js-by-whom").val(),
-      comments: $("#js-comments").val()
-    };
-    const required = ["scientificName", "location", "dateSighted", "location", "byWhomSighted"];
-    if (STORE.isCreate) {
-      addSighting(record);
-    } else {
-      console.log("About to call updateSighting");
-      console.log(record);
-      updateSighting(record);
-    }
-  });
+  e.preventDefault();
+  const record = {
+    tsn: $("#js-tsn").val(),
+    commonName: $("#js-common-name").val(),
+    scientificName: $("#js-scientific-name").val(),
+    kingdom: $("#js-kingdom").val(),
+    dateSighted: $(".js-date-sighted").val(),
+    timeSighted: $("#js-time-sighted").val(),
+    location: $("#js-location").val(),
+    byWhomSighted: $("#js-by-whom").val(),
+    comments: $("#js-comments").val()
+  };
+  const required = ["scientificName", "location", "dateSighted", "location", "byWhomSighted"];
+  if (STORE.isCreate) {
+    addSighting(record);
+  } else {
+    console.log("About to call updateSighting");
+    console.log(record);
+    updateSighting(record);
+  }
+});
+
 
   $("#js-list").on("click", "#js-view", e => {
-    e.preventDefault();
-    console.log("Inside click event for View/Update with data-id: ", e.target.getAttribute("data-id"));
-    const id = e.target.getAttribute("data-id");
-    findSingleSighting(id);
-    STORE.updateId = id;
-  });
+  e.preventDefault();
+  console.log("Inside click event for View/Update with data-id: ", e.target.getAttribute("data-id"));
+  const id = e.target.getAttribute("data-id");
+  findSingleSighting(id);
+  STORE.updateId = id;
+});
+
 
   $("#js-list").on("click", "#js-delete", function(e) {
-    e.preventDefault();
-    console.log("Delete: ", $(this));
-    if (confirm("Delete record for " + e.target.getAttribute("data-common-name") + "?")) {
-      let id = e.target.getAttribute("data-id");
-      let commonName = e.target.getAttribute("data-common-name");
-      const screenObj = $(this);
-      $.ajax({
-        method: "DELETE",
-        url: "/" + id,
-        success: function(data) {
-          removeItem(e.target.getAttribute("data-id"), screenObj);
-        },
-        dataType: "json",
-        contentType: "application/json"
-      });
-    }
-  });
+  e.preventDefault();
+  console.log("Delete: ", $(this));
+  if (confirm("Delete record for " + e.target.getAttribute("data-common-name") + "?")) {
+    let id = e.target.getAttribute("data-id");
+    let commonName = e.target.getAttribute("data-common-name");
+    const screenObj = $(this);
+    $.ajax({
+      method: "DELETE",
+      url: "/" + id,
+      success: function(data) {
+        removeItem(e.target.getAttribute("data-id"), screenObj);
+      },
+      dataType: "json",
+      contentType: "application/json"
+    });
+  }
+});
+
 
   $("#js-clear").on("click", e => {
-    clearFields();
-    toggleSaveUpdate("save");
-  });
+  clearFields();
+  toggleSaveUpdate("save");
+});
+
 
   $(".common-events").on("click", e => {
-    resetFeedback();
-  });
+  resetFeedback();
+});
+
+
 }
 
 // 1. Start when document is ready
 $(document).ready(function() {
-  datePickerSetup();
-  handleUserActions();
+    datePickerSetup();
+    handleUserActions();
 });
