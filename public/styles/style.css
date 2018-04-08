@@ -18,6 +18,9 @@ h3 {
 .p2 {
   padding: 16px; }
 
+.no-display {
+  display: none; }
+
 button {
   color: white;
   background-color: #9a2103;
@@ -32,8 +35,8 @@ label {
   width: 100%;
   margin-left: 4px; }
 
-input,
-button.right-col {
+button.right-col,
+input {
   width: 98%;
   line-height: 1em;
   margin: 0.25em 1% 0.5em; }
@@ -48,8 +51,8 @@ div.time input {
 fieldset.bird-names .instructions {
   margin: 0;
   padding: 0; }
-  fieldset.bird-names .instructions p,
-  fieldset.bird-names .instructions .feedback {
+  fieldset.bird-names .instructions .feedback,
+  fieldset.bird-names .instructions p {
     display: block;
     width: 100%;
     line-height: 1em;
@@ -102,21 +105,24 @@ section.display-data ul {
   section.display-data ul .sighting-list {
     display: inline-block;
     width: 6em;
-    margin: 2px 1px;
+    margin: 8px 1px;
     vertical-align: top; }
+  section.display-data ul .sighting-list-buttons {
+    display: inline-block;
+    vertical-align: middle; }
   section.display-data ul .common-name,
   section.display-data ul .scientific-name {
     word-wrap: break-word; }
   section.display-data ul .time {
     width: 3em; }
-  section.display-data ul .view,
-  section.display-data ul .delete {
+  section.display-data ul .delete,
+  section.display-data ul .view {
     font-size: smaller; }
   section.display-data ul .view {
     width: 7em; }
 
-section.name-choices,
-section.display-data {
+section.display-data,
+section.name-choices {
   display: none; }
 
 @media only screen and (min-width: 440px) {
@@ -134,9 +140,9 @@ section.display-data {
     width: 20%;
     text-align: right;
     margin: 8px 1% 8px 0; }
-  input,
+  button.right-col,
   form p,
-  button.right-col {
+  input {
     clear: both;
     width: 75%;
     margin: 8px 0 8px 1%; }
@@ -200,8 +206,6 @@ section.display-data {
   section.display-data ul .sighting-list {
     width: 12%; }
   section.display-data ul .time {
-    width: 5%; }
-  section.display-data ul .view {
-    width: 12%; } }
+    width: 5%; } }
 
 /*# sourceMappingURL=style.css.map */

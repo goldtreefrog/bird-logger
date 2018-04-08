@@ -14,6 +14,7 @@ function getRequiredFields() {
   return {
     commonName: "Common Name",
     scientificName: "Scientific Name",
+    kingdom: "Kingdom",
     dateSighted: "Date Sighted",
     location: "Location",
     byWhomSighted: "By Whom"

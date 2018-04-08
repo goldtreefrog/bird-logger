@@ -26,7 +26,8 @@ function clearFields() {
   $("input").val("");
 }
 
-         function resetFeedback() {
+
+function resetFeedback() {
   $("#js-feedback").css("visibility", "hidden");
   $("#js-feedback").html("");
 }
@@ -75,11 +76,13 @@ function insertList(data) {
     .map(sighting => {
       // Ignore the time so split at "T"
       let dateSighted = $.datepicker.formatDate("mm/dd/y", $.datepicker.parseDate("yy-mm-dd", sighting.dateSighted.split("T")[0]));
-      return `<li><span class="sighting-list common-name">${sighting.commonName}</span> <span class="sighting-list scientific-name">${sighting.scientificName}</span> <span class="sighting-list">${dateSighted}</span> <span class="sighting-list time">${sighting.timeSighted}</span> <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span>
-  <button class="sighting-list view"  id="js-view" data-id="${sighting._id}">View/Update</button>
-  <button class="sighting-list delete" id="js-delete" data-id="${sighting._id}" data-common-name="${sighting.commonName}">Delete</button>
-</li>
-`;
+      return `<li><span class="sighting-list common-name">${sighting.commonName}</span> <span class="sighting-list scientific-name">${sighting.scientificName}</span> <span class="sighting-list">${dateSighted}</span> <span class="sighting-list time">${sighting.timeSighted}</span>  <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span>
+  <div class="sighting-list-buttons">
+    <button class="view" id="js-view" data-id="${sighting._id}">View/Update</button>
+    <button class="delete" id="js-delete" data-id="${sighting._id}" data-common-name="${sighting.commonName}">Delete</button>
+  </div>
+  <span class="tsn no-display">${sighting.tsn}</span>
+</li>`;
     })
     .join("");
 
@@ -112,7 +115,11 @@ function getDataFromApi(baseUrl, searchKey, searchTerm, callback) {
  */
 function lookupSimilarNamesAndTsns(commonName) {
   console.log(`Look up similar names for "${commonName}"`);
-
+  console.log("commonName.length: ", commonName.length);
+  if (commonName.length < 2) {
+    displayMessage("Organism name must be at least 2 characters long.");
+    return;
+  }
   getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/searchByCommonName", "srchKey", commonName, organizeCommonNamesAndTsns);
 }
 
@@ -211,7 +218,8 @@ function extractScientificNameAndKingdom(data) {
   $("#js-scientific-name").val(data.combinedName);
   console.log(data.kingdom);
   $("#js-kingdom").val(data.kingdom);
-  $("#js-kingdom").prop("readonly", true);
+  // $("#js-kingdom").prop("readonly", true);
+  $("#js-tsn").val(data.tsn);
 }
 
 /**
@@ -268,6 +276,7 @@ function populateViewForm(data) {
   $("#js-location").val(data.creatureSightings.location);
   $("#js-by-whom").val(data.creatureSightings.byWhomSighted);
   $("#js-comments").val(data.creatureSightings.comments);
+  $("#js-tsn").val(data.creatureSightings.tsn);
 }
 
 function removeItem(id, screenObjToRemove) {
@@ -305,7 +314,7 @@ function handleUserActions() {
     $("#name-choices").html("");
 
     let commonName = $("#js-common-name").val();
-    if (commonName.length > 1) {
+    if (commonName.length > 0) {
       const ApiLookupResult = lookupSimilarNamesAndTsns(commonName);
     }
   });
@@ -346,7 +355,7 @@ function handleUserActions() {
     byWhomSighted: $("#js-by-whom").val(),
     comments: $("#js-comments").val()
   };
-  const required = ["scientificName", "location", "dateSighted", "location", "byWhomSighted"];
+
   if (STORE.isCreate) {
     addSighting(record);
   } else {
@@ -377,7 +386,7 @@ function handleUserActions() {
       method: "DELETE",
       url: "/" + id,
       success: function(data) {
-        removeItem(e.target.getAttribute("data-id"), screenObj);
+        removeItem(e.target.getAttribute("data-id"), screenObj.parent());
       },
       dataType: "json",
       contentType: "application/json"

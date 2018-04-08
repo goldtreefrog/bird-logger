@@ -8,7 +8,7 @@ const creatureSightingSchema = mongoose.Schema(
     tsn: { type: String },
     commonName: { type: String },
     scientificName: { type: String, required: true },
-    kingdom: { type: String },
+    kingdom: { type: String, required: true },
     dateSighted: { type: Date, required: true },
     timeSighted: String,
     location: { type: String, required: true },
