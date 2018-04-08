@@ -49,7 +49,6 @@ router.get("/creature-sightings", jsonParser, (req, res) => {
   CreatureSighting.find()
     .limit(50)
     .then(creatureSightings => {
-      console.log("Retrieving creature sightings list");
       res.json({ creatureSightings });
     })
     .catch(err => {

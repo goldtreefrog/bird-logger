@@ -15,7 +15,6 @@ function showSection(showSection) {
   } else {
     section = "section" + showSection;
   }
-  console.log("section: ", section);
   $(section).css("display", "block");
 
   // Reset message
@@ -68,7 +67,7 @@ function populateList() {
     },
     dataType: "json"
   };
-  console.log("About to do .ajax with settings: ", settings);
+
   $.ajax(settings);
 }
 
@@ -80,7 +79,6 @@ function populateList() {
  * @callback displayMessage
  */
 function updateSighting(sightingRecord) {
-  console.log("updating sighting: " + sightingRecord);
   $.ajax({
     method: "PUT",
     url: `/${STORE.updateId}`,
@@ -103,22 +101,15 @@ function updateSighting(sightingRecord) {
  * @return
  */
 function insertList(data) {
-  console.log("Inside insertList");
-  console.log(data);
   showSection("display-data");
   const listTitleHtml = `<li><span class="sighting-list title-header">Common Name</span> <span class="sighting-list title-header">Scientific Name</span> <span class="sighting-list title-header">Date Sighted</span> <span class="sighting-list title-header time">Time</span> <span class="sighting-list title-header">Location</span> <span class="sighting-list title-header">Comments</span>
 </li>
 `;
-  console.log("before testDate created");
   const listHtml = data.creatureSightings
     .map(sighting => {
       // Ignore the time so split at "T"
       let dateSighted = $.datepicker.formatDate("mm/dd/y", $.datepicker.parseDate("yy-mm-dd", sighting.dateSighted.split("T")[0]));
-      return `<li><span class="sighting-list common-name">${sighting.commonName}</span> <span class="sighting-list scientific-name">${
-        sighting.scientificName
-      }</span> <span class="sighting-list">${dateSighted}</span> <span class="sighting-list time">${
-        sighting.timeSighted
-      }</span>  <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span>
+      return `<li><span class="sighting-list common-name">${sighting.commonName}</span> <span class="sighting-list scientific-name">${sighting.scientificName}</span> <span class="sighting-list">${dateSighted}</span> <span class="sighting-list time">${sighting.timeSighted}</span>  <span class="sighting-list">${sighting.location}</span> <span class="sighting-list">${sighting.comments}</span>
   <div class="sighting-list-buttons">
     <button class="view" id="js-view" data-id="${sighting._id}">View/Update</button>
     <button class="delete" id="js-delete" data-id="${sighting._id}" data-common-name="${sighting.commonName}">Delete</button>
@@ -134,8 +125,10 @@ function insertList(data) {
   clearFields();
 }
 
+
 /**
  * Send common name to ITIS database to get list of similar common names (from which user will select one)
+ * NOTE: This function could be used for other searches of ITIS data, such as to get parent taxonomic category, which we would need to do repetitively in order to find out if the organism belongs to the bird ("Aves") class (a feature saved for another phase...)
  * @method getDataFromApi
  * @param {} baseUrl
  * @param {} searchKey
@@ -152,16 +145,10 @@ function getDataFromApi(baseUrl, searchKey, searchTerm, callback) {
     dataType: "jsonp",
     success: callback
   };
-  console.log(settings.url);
+
   $.ajax(settings);
 }
 
-/**
- * 3.
- * @method lookupSimilarNamesAndTsns
- * @param {string} commonName - Common name for bird
- * @return result
- */
 /**
  * Check to be sure common name entered is at least two characters. If so, call getDataFromApi to show similar names or handle exact match.
  * @method lookupSimilarNamesAndTsns
@@ -169,8 +156,6 @@ function getDataFromApi(baseUrl, searchKey, searchTerm, callback) {
  * @return
  */
 function lookupSimilarNamesAndTsns(commonName) {
-  console.log(`Look up similar names for "${commonName}"`);
-  console.log("commonName.length: ", commonName.length);
   if (commonName.length < 2) {
     displayMessage("Organism name must be at least 2 characters long.");
     return;
@@ -178,12 +163,6 @@ function lookupSimilarNamesAndTsns(commonName) {
   getDataFromApi("https://www.itis.gov/ITISWebService/jsonservice/searchByCommonName", "srchKey", commonName, organizeCommonNamesAndTsns);
 }
 
-/**
- * 5. Check to see that data for at least one common name was returned. If not, issue error. If so, parse the JSON and store similar common names and TSNs in "namesTsns" array.
- * @method organizeCommonNamesAndTsns
- * @param {object} data - JSON returned by API call in lookupSimilarNamesAndTsns
- * @return
- */
 /**
  * If exact match, put scientific name and kingdom into the input fields for the new record.
  * If there is no exact match, display a list of similar common names.
@@ -197,26 +176,20 @@ function lookupSimilarNamesAndTsns(commonName) {
  * @return
  */
 function organizeCommonNamesAndTsns(data) {
-  console.log("Inside organizeCommonNamesAndTsns", data);
-  console.log(data.commonNames);
-
   if (data.commonNames.length === 1 && !data.commonNames[0]) {
-    console.log(`No matching common names were found.`);
     displayMessage("No match in database for '" + $("#js-common-name").val() + ".'");
     return;
   }
 
   const namesTsns = [];
   for (let i = 0; i < data.commonNames.length; i++) {
-    // If you find an exact match, use it unless user WANTS to see the list of alternatives
+    // If you find an exact match, use it. Look up scientific name and do not process other common names.
     if (
       $("#js-common-name")
         .val()
         .trim() === data.commonNames[i].commonName
     ) {
-      // Look up scientific name and do not process other common names
       findScientificNameFromTsn(data.commonNames[i].tsn, extractScientificNameAndKingdom);
-      console.log("Found exact match: " + data.commonNames[i].commonName);
       return;
     } else {
       // Add to array of name alternatives
@@ -230,8 +203,6 @@ function organizeCommonNamesAndTsns(data) {
   return;
 }
 
-// 6. Display multiple names that are similar to the one the user entered.
-// This function gets called if the common name the user entered does not precisely match any in the ITIS database or if the user clicks the ___ button to show similar names.
 /**
  * Display common names retrieved from ITIS database
  * @method displayNameAlternatives
@@ -239,35 +210,24 @@ function organizeCommonNamesAndTsns(data) {
  * @return
  */
 function displayNameAlternatives(namesTsns) {
-  console.log("Common names matching input:");
-  console.log(namesTsns);
   showSection("name-choices");
   let maxEntries = 20; // Arbitrary number that should be changed or else use pagination.
   if (namesTsns.length < maxEntries) {
     maxEntries = namesTsns.length;
   }
-  console.log(`Number of ITIS entries available: ${namesTsns.length}`);
-  console.log("maxEntries: " + maxEntries);
 
   // Show alternative common names to user
   // Create the alternative name suggestions in backwards order on the screen so they end up in forward order.
   for (let i = maxEntries - 1; i >= 0; i--) {
     $("#name-choices").prepend('<li><a class="name-choice" href="#" data="' + namesTsns[i].tsn + '">' + namesTsns[i].commonName + " " + "</a></li>");
 
-    // Add the TSN to the data attribute so we can access it later but user never sees it.
+    // Add the TSN to the data attribute so we can access it later (but user never sees it).
     $("#name-choices")
       .first()
       .data("tsn", namesTsns[i].tsn);
   }
 }
 
-/**
- * 7. Call ITIS API to look up scientific name.
- * Note: Callback function is extractScientificNameAndKingdom. I pass it here because I may end up calling this function from more than one other function, in which case the callback would change.
- * @method findScientificNameFromTsn
- * @param {} namesTsns
- * @return
- */
 /**
  * Check to be sure TSN is valid and then pass it to getDataFromApi function to retrieve scientific name.
  * @method findScientificNameFromTsn
@@ -283,12 +243,7 @@ function findScientificNameFromTsn(tsn, callback) {
   }
 }
 
-/**
- * 8. Extract kingdom and scientific name from API result
- * @method extractScientificNameAndKingdom
- * @param {} data
- * @return
- */
+
 /**
  * Show scientific name and kingdom for organism chosen by user.
  * @method extractScientificNameAndKingdom
@@ -296,23 +251,12 @@ function findScientificNameFromTsn(tsn, callback) {
  * @return
  */
 function extractScientificNameAndKingdom(data) {
-  console.log("Inside extractScientificNameAndKingdom");
-  console.log(data);
-  console.log(data.combinedName);
   showSection("enter-data");
   $("#js-scientific-name").val(data.combinedName);
-  console.log(data.kingdom);
   $("#js-kingdom").val(data.kingdom);
-  // $("#js-kingdom").prop("readonly", true);
   $("#js-tsn").val(data.tsn);
 }
 
-/**
- * Extract relevant TSN parent data and repeat until it is a bird
- * @method extractParentTsn
- * @param {} data
- * @return
- */
 
 /**
  * Save the sighting record to the database.
@@ -321,8 +265,6 @@ function extractScientificNameAndKingdom(data) {
  * @return
  */
 function addSighting(sightingRecord) {
-  window.test = sightingRecord;
-  console.log("Adding sighting: " + sightingRecord);
   $.ajax({
     method: "POST",
     url: "/",
@@ -334,7 +276,6 @@ function addSighting(sightingRecord) {
      * @return
      */
     success: function(data) {
-      console.log("Success!!!");
       displayMessage(sightingRecord.commonName + " record saved successfully.");
       $("input").val("");
     },
@@ -361,7 +302,7 @@ function addSighting(sightingRecord) {
  */
 function findSingleSighting(id) {
   showSection("enter-data");
-  console.log("Found sighting: " + id);
+
   $.ajax({
     method: "GET",
     url: "/find/" + id,
@@ -378,7 +319,6 @@ function findSingleSighting(id) {
  * @return
  */
 function populateViewForm(data) {
-  console.log("Inside populateViewForm with data: ", data);
   toggleSaveUpdate("update");
   showSection("enter-data");
   $("#js-common-name").val(data.creatureSightings.commonName);
@@ -432,7 +372,7 @@ function datePickerSetup() {
 }
 
 /**
- * 2. Handle user action events
+ * Handle user action events
  * @method handleUserActions
  * @return
  */
@@ -457,90 +397,84 @@ function handleUserActions() {
   });
 
   // User clicked the 'Save' button
-  $("#js-add-sighting").on("click", e => {
-    e.preventDefault();
-    clearFields();
-    toggleSaveUpdate("save");
-    showSection("enter-data");
-  });
+$("#js-add-sighting").on("click", e => {
+  e.preventDefault();
+  clearFields();
+  toggleSaveUpdate("save");
+  showSection("enter-data");
+});
 
   // User clicked 'Show All' link. Call populateList().
-  $("#js-show-list").on("click", function(e) {
-    e.preventDefault();
-    populateList();
-  });
+$("#js-show-list").on("click", function(e) {
+  e.preventDefault();
+  populateList();
+});
 
   // User clicked 'Save'/'Update' button. Call addSighting or updateSighting function.
-  $("form").on("submit", function(e) {
-    e.preventDefault();
-    const record = {
-      tsn: $("#js-tsn").val(),
-      commonName: $("#js-common-name").val(),
-      scientificName: $("#js-scientific-name").val(),
-      kingdom: $("#js-kingdom").val(),
-      dateSighted: $(".js-date-sighted").val(),
-      timeSighted: $("#js-time-sighted").val(),
-      location: $("#js-location").val(),
-      byWhomSighted: $("#js-by-whom").val(),
-      comments: $("#js-comments").val()
-    };
+$("form").on("submit", function(e) {
+  e.preventDefault();
+  const record = {
+    tsn: $("#js-tsn").val(),
+    commonName: $("#js-common-name").val(),
+    scientificName: $("#js-scientific-name").val(),
+    kingdom: $("#js-kingdom").val(),
+    dateSighted: $(".js-date-sighted").val(),
+    timeSighted: $("#js-time-sighted").val(),
+    location: $("#js-location").val(),
+    byWhomSighted: $("#js-by-whom").val(),
+    comments: $("#js-comments").val()
+  };
 
-    if (STORE.isCreate) {
-      addSighting(record);
-    } else {
-      updateSighting(record);
-    }
-  });
+  if (STORE.isCreate) {
+    addSighting(record);
+  } else {
+    updateSighting(record);
+  }
+});
 
   // User clicked 'View/Update' button on list of records. Call findSingleSighting() to show desired one.
-  $("#js-list").on("click", "#js-view", e => {
-    e.preventDefault();
-    console.log("Inside click event for View/Update with data-id: ", e.target.getAttribute("data-id"));
-    const id = e.target.getAttribute("data-id");
-    findSingleSighting(id);
-    STORE.updateId = id;
-  });
+$("#js-list").on("click", "#js-view", e => {
+  e.preventDefault();
+  const id = e.target.getAttribute("data-id");
+  findSingleSighting(id);
+  STORE.updateId = id;
+});
 
   // User clicked delete, so remove record from both database and screen.
-  $("#js-list").on("click", "#js-delete", function(e) {
-    e.preventDefault();
-    console.log("Delete: ", $(this));
-    if (confirm("Delete record for " + e.target.getAttribute("data-common-name") + "?")) {
-      let id = e.target.getAttribute("data-id");
-      let commonName = e.target.getAttribute("data-common-name");
-      const screenObj = $(this);
-      $.ajax({
-        method: "DELETE",
-        url: "/" + id,
-        /**
-         * Description
-         * @method success
-         * @param {} data
-         * @return
-         */
-        success: function(data) {
-          removeItem(e.target.getAttribute("data-id"), screenObj.parent());
-        },
-        dataType: "json",
-        contentType: "application/json"
-      });
-    }
-  });
+$("#js-list").on("click", "#js-delete", function(e) {
+  e.preventDefault();
+  if (confirm("Delete record for " + e.target.getAttribute("data-common-name") + "?")) {
+    let id = e.target.getAttribute("data-id");
+    let commonName = e.target.getAttribute("data-common-name");
+    const screenObj = $(this);
+    $.ajax({
+      method: "DELETE",
+      url: "/" + id,
+      success: function(data) {
+        removeItem(e.target.getAttribute("data-id"), screenObj.parent());
+      },
+      dataType: "json",
+      contentType: "application/json"
+    });
+  }
+});
 
   // User clicked the 'Clear' button
-  $("#js-clear").on("click", e => {
-    clearFields();
-    toggleSaveUpdate("save");
-  });
+$("#js-clear").on("click", e => {
+  clearFields();
+  toggleSaveUpdate("save");
+});
 
   // For links and buttons that open a new section where previous section data should be cleared
-  $(".common-events").on("click", e => {
-    resetFeedback();
-  });
+$(".common-events").on("click", e => {
+  resetFeedback();
+});
+
+
 }
 
-// 1. Start when document is ready
+// When document is ready, set up datepicker and await user actions.
 $(document).ready(function() {
-  datePickerSetup();
-  handleUserActions();
+    datePickerSetup();
+    handleUserActions();
 });
