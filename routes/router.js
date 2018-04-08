@@ -28,10 +28,8 @@ function checkForBadData(req) {
 
   for (var k in requiredFields) {
     if (requiredFields.hasOwnProperty(k)) {
-      // alert("Key is " + k + ", value is" + target[k]);
       if (!(k in req.body)) {
         message = `Missing \`${k}\` in request body`;
-        // return res.status(400).send(message);
       } else {
         if (req.body[k].trim() === "") {
           message += requiredFields[k] + ", ";
@@ -45,7 +43,7 @@ function checkForBadData(req) {
     message = "Please fill in required fields: " + message;
   }
   return message;
-} // End of checkForBadData
+}
 
 router.get("/creature-sightings", jsonParser, (req, res) => {
   CreatureSighting.find()
@@ -125,7 +123,6 @@ router.put("/:id", jsonParser, (req, res) => {
   const item = CreatureSighting.findByIdAndUpdate(req.params.id, req.body)
     .then(record => {
       res.status(204).end();
-      // res.status(204).json({ message: "Success!" });
     })
     .catch(err => {
       console.error(err);

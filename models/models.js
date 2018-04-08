@@ -20,8 +20,6 @@ const creatureSightingSchema = mongoose.Schema(
   }
 );
 
-// instance methods and virtual properties on our schema must be defined
-// *before* we make the call to `.model`.
 const CreatureSighting = mongoose.model("CreatureSighting", creatureSightingSchema);
 
 module.exports = { CreatureSighting };
