@@ -420,6 +420,13 @@ $("#js-add-sighting").on("click", e => {
   showSection("enter-data");
 });
 
+  // User clicked the 'Contact' button
+$("#js-contact").on("click", e => {
+  clearFields();
+  toggleSaveUpdate("save");
+  showSection("contact");
+});
+
   // User clicked 'Show All' link. Call populateList().
 $("#js-show-list").on("click", function(e) {
   e.preventDefault();
