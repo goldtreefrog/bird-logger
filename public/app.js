@@ -269,22 +269,10 @@ function addSighting(sightingRecord) {
     method: "POST",
     url: "/",
     data: JSON.stringify(sightingRecord),
-    /**
-     * Description
-     * @method success
-     * @param {} data
-     * @return
-     */
     success: function(data) {
       displayMessage(sightingRecord.commonName + " record saved successfully.");
       $("input").val("");
     },
-    /**
-     * Description
-     * @method error
-     * @param {} data
-     * @return
-     */
     error: function(data) {
       console.log(data.responseText);
       displayMessage(data.responseText);
@@ -377,6 +365,34 @@ function datePickerSetup() {
  * @return
  */
 function handleUserActions() {
+  //
+// User clicked 'Read Wikipedia' so open Wikipedia for that organism
+// NOTE: In a later phase, would change to use ebiard (Cornell University) website for birds.
+$("#js-read-description").on("click", e => {
+  let url = "";
+  let organism = $("#js-scientific-name").val();
+
+  // If there is no scientific name, use the common name if there is one.
+  if (!organism) {
+    organism = $("#js-common-name").val();
+  }
+
+  // If scientific and common names are blank, ask user if wants to visit home page.
+  if (organism.trim() === "") {
+    if (confirm("There is no scientific or common name entered. Do you want to open Wikipedia's home page?")) {
+      url = "https://en.wikipedia.org/";
+    }
+  } else {
+    url = "https://en.wikipedia.org/wiki/" + organism.split(" ").join("_");
+  }
+
+  // Open Wikipedia in a new window
+  if (!(url === "")) {
+    window.open(url);
+  }
+});
+
+
   $("#js-common-name").on("change", function(e) {
     e.preventDefault();
     $("#js-scientific-name").val("");
