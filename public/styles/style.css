@@ -165,8 +165,7 @@ section.contact {
   section.contact div p {
     width: 26em; }
     section.contact div p .note-text {
-      max-width: 18em;
-      border: solid 1px orange; } }
+      max-width: 18em; } }
 
 @media only screen and (min-width: 628px) {
   label {
@@ -189,8 +188,7 @@ section.contact {
   section.contact div p {
     width: 35em; }
     section.contact div p .note-text {
-      max-width: 27em;
-      border: solid 1px blue; } }
+      max-width: 27em; } }
 
 @media only screen and (min-width: 900px) {
   body {
