@@ -247,8 +247,7 @@ section.contact div p .note-text {
 @media only screen and (min-width: 440px) {
   .ctr {
     clear: both;
-    width: 75%;
-    margin-left: 21%;
+    width: 100%;
   }
   .ctr button {
     width: 48%;
@@ -271,6 +270,14 @@ section.contact div p .note-text {
 }
 
 @media only screen and (min-width: 628px) {
+  .ctr {
+    clear: both;
+    width: 75%;
+    margin-left: 21%;
+  }
+  .ctr button {
+    width: 48%;
+  }
   label {
     clear: left;
     float: left;
