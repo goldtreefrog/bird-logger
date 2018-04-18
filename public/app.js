@@ -106,23 +106,21 @@ function insertList(data) {
     .map(sighting => {
       // Ignore the time so split at "T"
       let dateSighted = $.datepicker.formatDate("mm/dd/y", $.datepicker.parseDate("yy-mm-dd", sighting.dateSighted.split("T")[0]));
-      return `
-        <li class="sighting-record">
-          <header>
-            <h3 class="m0">
-                ${sighting.commonName}
-              </h3>
-          </header>
-          <ul class="sighting-row-2 m0">
-            <li class="sighting-element scientific-name"><em>${sighting.scientificName}</em></li>
-            <li class="sighting-element date-sighted">${dateSighted}</li>
-            <li class="sighting-element-buttons">
-              <button class="view" id="js-view" data-id="${sighting._id}">View/Update</button>
-              <button class="delete" id="js-delete" data-id="${sighting._id}" data-common-name="${sighting.commonName}">Delete</button>
-            </li>
-          </ul>
-        </li>
-      `;
+      return `<li class="sighting-record">
+  <header>
+    <h3 class="m0">
+        ${sighting.commonName}
+      </h3>
+  </header>
+  <ul class="sighting-row-2 m0">
+    <li class="sighting-element scientific-name"><em>${sighting.scientificName}</em></li>
+    <li class="sighting-element date-sighted">${dateSighted}</li>
+    <li class="sighting-element-buttons">
+      <button class="view" id="js-view" data-id="${sighting._id}">View/Update</button>
+      <button class="delete" id="js-delete" data-id="${sighting._id}" data-common-name="${sighting.commonName}">Delete</button>
+    </li>
+  </ul>
+</li>`;
     })
     .join("");
 
@@ -131,6 +129,7 @@ function insertList(data) {
   // Clear fields in form for adding or updating a single sighting
   clearFields();
 }
+
 
 /**
  * Send common name to ITIS database to get list of similar common names (from which user will select one)
@@ -249,6 +248,7 @@ function findScientificNameFromTsn(tsn, callback) {
   }
 }
 
+
 /**
  * Show scientific name and kingdom for organism chosen by user.
  * @method extractScientificNameAndKingdom
@@ -261,6 +261,7 @@ function extractScientificNameAndKingdom(data) {
   $("#js-kingdom").val(data.kingdom);
   $("#js-tsn").val(data.tsn);
 }
+
 
 /**
  * Save the sighting record to the database.
@@ -369,32 +370,45 @@ function datePickerSetup() {
  * @return
  */
 function handleUserActions() {
+  // User clicked the 'Enter Here' button
+$("#js-enter").on("click", e => {
+  e.preventDefault();
+  showSection("enter-data");
+});
+
+  // User clicked the 'Home' link
+$("#js-home").on("click", e => {
+  e.preventDefault();
+  showSection("lead-in");
+});
+
   //
-  // User clicked 'Read Wikipedia' so open Wikipedia for that organism
-  // NOTE: In a later phase, would change to use ebiard (Cornell University) website for birds.
-  $("#js-read-description").on("click", e => {
-    let url = "";
-    let organism = $("#js-scientific-name").val();
+// User clicked 'Read Wikipedia' so open Wikipedia for that organism
+// NOTE: In a later phase, would change to use ebiard (Cornell University) website for birds.
+$("#js-read-description").on("click", e => {
+  let url = "";
+  let organism = $("#js-scientific-name").val();
 
-    // If there is no scientific name, use the common name if there is one.
-    if (!organism) {
-      organism = $("#js-common-name").val();
-    }
+  // If there is no scientific name, use the common name if there is one.
+  if (!organism) {
+    organism = $("#js-common-name").val();
+  }
 
-    // If scientific and common names are blank, ask user if wants to visit home page.
-    if (organism.trim() === "") {
-      if (confirm("There is no scientific or common name entered. Do you want to open Wikipedia's home page?")) {
-        url = "https://en.wikipedia.org/";
-      }
-    } else {
-      url = "https://en.wikipedia.org/wiki/" + organism.split(" ").join("_");
+  // If scientific and common names are blank, ask user if wants to visit home page.
+  if (organism.trim() === "") {
+    if (confirm("There is no scientific or common name entered. Do you want to open Wikipedia's home page?")) {
+      url = "https://en.wikipedia.org/";
     }
+  } else {
+    url = "https://en.wikipedia.org/wiki/" + organism.split(" ").join("_");
+  }
 
-    // Open Wikipedia in a new window
-    if (!(url === "")) {
-      window.open(url);
-    }
-  });
+  // Open Wikipedia in a new window
+  if (!(url === "")) {
+    window.open(url);
+  }
+});
+
 
   $("#js-common-name").on("change", function(e) {
     e.preventDefault();
@@ -416,89 +430,93 @@ function handleUserActions() {
   });
 
   // User clicked the 'Save' button
-  $("#js-add-sighting").on("click", e => {
-    e.preventDefault();
-    clearFields();
-    toggleSaveUpdate("save");
-    showSection("enter-data");
-  });
+$("#js-add-sighting").on("click", e => {
+  e.preventDefault();
+  clearFields();
+  toggleSaveUpdate("save");
+  showSection("enter-data");
+});
 
   // User clicked the 'Contact' button
-  $("#js-contact").on("click", e => {
-    clearFields();
-    toggleSaveUpdate("save");
-    showSection("contact");
-  });
+$("#js-contact").on("click", e => {
+  clearFields();
+  toggleSaveUpdate("save");
+  showSection("contact");
+});
 
   // User clicked 'Show All' link. Call populateList().
-  $("#js-show-list").on("click", function(e) {
-    e.preventDefault();
-    populateList();
-  });
+$("#js-show-list").on("click", function(e) {
+  e.preventDefault();
+  populateList();
+});
 
   // User clicked 'Save'/'Update' button. Call addSighting or updateSighting function.
-  $("form").on("submit", function(e) {
-    e.preventDefault();
-    const record = {
-      tsn: $("#js-tsn").val(),
-      commonName: $("#js-common-name").val(),
-      scientificName: $("#js-scientific-name").val(),
-      kingdom: $("#js-kingdom").val(),
-      dateSighted: $(".js-date-sighted").val(),
-      timeSighted: $("#js-time-sighted").val(),
-      location: $("#js-location").val(),
-      byWhomSighted: $("#js-by-whom").val(),
-      comments: $("#js-comments").val()
-    };
+$("form").on("submit", function(e) {
+  e.preventDefault();
+  const record = {
+    tsn: $("#js-tsn").val(),
+    commonName: $("#js-common-name").val(),
+    scientificName: $("#js-scientific-name").val(),
+    kingdom: $("#js-kingdom").val(),
+    dateSighted: $(".js-date-sighted").val(),
+    timeSighted: $("#js-time-sighted").val(),
+    location: $("#js-location").val(),
+    byWhomSighted: $("#js-by-whom").val(),
+    comments: $("#js-comments").val()
+  };
 
-    if (STORE.isCreate) {
-      addSighting(record);
-    } else {
-      updateSighting(record);
-    }
-  });
+  if (STORE.isCreate) {
+    addSighting(record);
+  } else {
+    updateSighting(record);
+  }
+  $("#js-common-name").focus();
+});
 
   // User clicked 'View/Update' button on list of records. Call findSingleSighting() to show desired one.
-  $("#js-list").on("click", "#js-view", e => {
-    e.preventDefault();
-    const id = e.target.getAttribute("data-id");
-    findSingleSighting(id);
-    STORE.updateId = id;
-  });
+$("#js-list").on("click", "#js-view", e => {
+  e.preventDefault();
+  const id = e.target.getAttribute("data-id");
+  findSingleSighting(id);
+  STORE.updateId = id;
+});
 
   // User clicked delete, so remove record from both database and screen.
-  $("#js-list").on("click", "#js-delete", function(e) {
-    e.preventDefault();
-    if (confirm("Delete record for " + e.target.getAttribute("data-common-name") + "?")) {
-      let id = e.target.getAttribute("data-id");
-      let commonName = e.target.getAttribute("data-common-name");
-      const screenObj = $(this);
-      $.ajax({
-        method: "DELETE",
-        url: "/" + id,
-        success: function(data) {
-          removeItem(e.target.getAttribute("data-id"), screenObj.parent().parent());
-        },
-        dataType: "json",
-        contentType: "application/json"
-      });
-    }
-  });
+$("#js-list").on("click", "#js-delete", function(e) {
+  e.preventDefault();
+  if (confirm("Delete record for " + e.target.getAttribute("data-common-name") + "?")) {
+    let id = e.target.getAttribute("data-id");
+    let commonName = e.target.getAttribute("data-common-name");
+    const screenObj = $(this);
+    $.ajax({
+      method: "DELETE",
+      url: "/" + id,
+      success: function(data) {
+        removeItem(e.target.getAttribute("data-id"), screenObj.parent().parent());
+      },
+      dataType: "json",
+      contentType: "application/json"
+    });
+  }
+});
 
   // User clicked the 'Clear' button
-  $("#js-clear").on("click", e => {
-    clearFields();
-    toggleSaveUpdate("save");
-  });
+$("#js-clear").on("click", e => {
+  clearFields();
+  toggleSaveUpdate("save");
+  $("#js-common-name").focus();
+});
 
   // For links and buttons that open a new section where previous section data should be cleared
-  $(".common-events").on("click", e => {
-    resetFeedback();
-  });
+$(".common-events").on("click", e => {
+  resetFeedback();
+});
+
+
 }
 
 // When document is ready, set up datepicker and await user actions.
 $(document).ready(function() {
-  datePickerSetup();
-  handleUserActions();
+    datePickerSetup();
+    handleUserActions();
 });

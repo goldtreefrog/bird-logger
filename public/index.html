@@ -1,88 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-  <meta charset="UTF-8" />
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <meta content="bird identification, bird watching, bird sightings, bird log" name="keywords" />
-  <meta content="Bird Log: A place to track your bird sightings and verify identification by description and image." name="description" />
-  <meta name="robots" />
-  <meta content="Margaret Blauvelt" name="author" />
-  <title>Creature Watcher's Creature Log</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css?family=EB+Garamond|Ubuntu" rel="stylesheet" />
-  <link href="jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css" />
-  <link href="styles/style.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body>
-  <header role="banner">
-    <div class="app-bar p1">
-      <h1 class="m0">Creature Watcher's Creature Log</h1></div>
-    <nav role="navigation" id="navi-h"><a href="#" class="common-events" id="js-add-sighting">Add&nbsp;Sighting</a> <a href="#" id="js-show-list" class="common-events">Show&nbsp;All</a> <a href="#" class="common-events" id="js-contact">Contact</a></nav>
-  </header>
-  <main role="main">
-    <section class="enter-data">
-      <form action="#" name="writing" method="get" class="enter-data">
-        <fieldset class="bird-names">
-          <div class="instructions">
-            <div class="feedback" id="js-feedback"></div>
-            <p>Enter common or scientific name below:</p>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="bird identification, bird watching, bird sightings, bird log" name="keywords" />
+    <meta content="Bird Log: A place to track your bird sightings and verify identification by description and image." name="description" />
+    <meta name="robots" />
+    <meta content="Margaret Blauvelt" name="author" />
+    <title>Creature Watcher's Creature Log</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond|Ubuntu" rel="stylesheet" />
+    <link href="jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="styles/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <header role="banner">
+      <div class="app-bar p1">
+        <h1 class="m0">Creature Watcher's Creature Log</h1></div>
+      <nav role="navigation" id="navi-h"><a href="#" class="common-events" id="js-home">Home</a> <a href="#" class="common-events" id="js-add-sighting">Add&nbsp;Sighting</a> <a href="#" id="js-show-list" class="common-events">Show&nbsp;All</a> <a href="#" class="common-events" id="js-contact">Contact</a></nav>
+    </header>
+    <main role="main">
+      <section class="lead-in">
+        <div class="row-container">
+          <div class="bird-01">
+            <a href="https://pxhere.com/en/photo/1392906" alt="European robin" target="_blank"><img src="/images/nature-branch-bird-flower-10pct-1392906-pxhere.jpg" title="Image is released free of copyrights under Creative Commons CC0." class="bird-01" /></a>
           </div>
-          <p class="asterisk">* Indicates required field.</p>
-          <input type="hidden" id="js-tsn" name="tsn" />
-          <label for="common-name">Common Name:*</label>
-          <input type="text" id="js-common-name" name="common-name" accesskey="n" required="required" data-lpignore="true" />
-          <label for="scientific-name">Scientific Name:*</label>
-          <input type="text" id="js-scientific-name" name="scientific-name" accesskey="s" required="required" data-lpignore="true" />
-          <button type="button" name="read-description" value="Read Description" accesskey="r" id="js-read-description" class="right-col">Read Wikipedia</button>
-          <label for="kingdom">Kingdom:*</label>
-          <input type="text" id="js-kingdom" name="kingdom" accesskey="k" required="required" data-lpignore="true" />
-          <div class="date">
-            <label for="date-sighted">Date Sighted:*</label>
-            <input type="text" id="datepicker" name="date-sighted" accesskey="d" required="required" class="js-date-sighted" />
+          <h2>Love Wildlife?</h2></div>
+        <div class="row-container">
+          <a href="https://commons.wikimedia.org/wiki/File:Father_and_son_enjoy_a_leisurely_afternoon_of_birdwatching.jpg" alt="Father and son enjoy a leisurely afternoon of birdwatching" target="_blank"><img src="/images/512px-Father_and_son_enjoy_a_leisurely_afternoon_of_birdwatching.jpg" title="Photo by U.S. Fish and Wildlife Service [Public domain], via Wikimedia Commons" class="watcher-01" /></a>
+          <div class="enter">
+            <button type="button" name="enter" accesskey="e" class="enter" id="js-enter">Enter Here</button>
           </div>
-          <div class="time">
-            <label for="time-sighted">Time:</label>
-            <input type="time" id="js-time-sighted" name="time-sighted" accesskey="t" data-lpignore="true" oninvalid="setCustomValidity('Please use this format: (hh:mm AM/PM) or else leave blank.')" />
-          </div>
-          <label for="location">Location:*</label>
-          <input type="text" id="js-location" name="location" accesskey="l" required="required" data-lpignore="true" />
-          <label for="by-whom">By Whom:*</label>
-          <input type="text" id="js-by-whom" name="by-whom" accesskey="b" required="required" data-lpignore="true" />
-          <label for="comments" data-lpignore="true">Comments:</label>
-          <input type="text" id="js-comments" name="comments" accesskey="o" />
-          <div class="ctr">
-            <button type="submit" name="save" value="save" accesskey="a" id="js-save" class="bottom-left common-events">Save</button>
-            <button type="button" name="clear" value="clear" accesskey="d" id="js-clear" class="bottom-right common-events">Clear</button>
-          </div>
-        </fieldset>
-      </form>
-    </section>
-    <section class="name-choices">
-      <div>
-        <p>Please click on the species you want:</p>
-        <ul id="name-choices"></ul>
-      </div>
-    </section>
-    <section class="display-data">
-      <ul class="common-events" id="js-list"></ul>
-    </section>
-    <section class="contact">
-      <div>
-        <p><span class="left">Developer:</span> <span>Margaret Blauvelt</span></p>
-        <p><span class="left">Email: </span> <span>margaret @ blauvelt dot com</span></p>
-        <p><span class="note-label">NOTE: </span> <span class="note-text">To use the email address above, please remove spaces and replace &quot;dot&quot; with a period. (This is the lazy way to make it more likely that only humans will respond.)</span></p>
-      </div>
-    </section>
-  </main>
-  <footer role="contentinfo">
-    <summary class="p1">© 2017 Margaret Blauvelt</summary>
-  </footer>
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-  <script src="jquery-ui/jquery-ui.min.js"></script>
-  <script src="app.js"></script>
-</body>
-
+          <h3>To:</h3>
+          <ul class="bird-02">
+            <li>Keep a personal log of the wildlife you see.</li>
+            <li>Match common names with scientific ones.</li>
+            <li>Jump directly to a Wikipedia article about your animal or plant with a single click from inside your log.</li>
+          </ul>
+        </div>
+      </section>
+      <section class="enter-data">
+        <form action="#" name="writing" method="get" class="enter-data">
+          <fieldset class="bird-names">
+            <div class="instructions">
+              <div class="feedback" id="js-feedback"></div>
+              <p>Enter common or scientific name below:</p>
+            </div>
+            <p class="asterisk">* Indicates required field.</p>
+            <input type="hidden" id="js-tsn" name="tsn" />
+            <label for="common-name">Common Name:*</label>
+            <input type="text" id="js-common-name" name="common-name" accesskey="n" required="required" data-lpignore="true" />
+            <label for="scientific-name">Scientific Name:*</label>
+            <input type="text" id="js-scientific-name" name="scientific-name" accesskey="s" required="required" data-lpignore="true" />
+            <button type="button" name="read-description" value="Read Description" accesskey="r" id="js-read-description" class="right-col">Read Wikipedia</button>
+            <label for="kingdom">Kingdom:*</label>
+            <input type="text" id="js-kingdom" name="kingdom" accesskey="k" required="required" data-lpignore="true" />
+            <div class="date">
+              <label for="date-sighted">Date Sighted:*</label>
+              <input type="text" id="datepicker" name="date-sighted" accesskey="d" required="required" class="js-date-sighted" />
+            </div>
+            <div class="time">
+              <label for="time-sighted">Time:</label>
+              <input type="time" id="js-time-sighted" name="time-sighted" accesskey="t" data-lpignore="true" oninvalid="setCustomValidity('Please use this format: (hh:mm AM/PM) or else leave blank.')" />
+            </div>
+            <label for="location">Location:*</label>
+            <input type="text" id="js-location" name="location" accesskey="l" required="required" data-lpignore="true" />
+            <label for="by-whom">By Whom:*</label>
+            <input type="text" id="js-by-whom" name="by-whom" accesskey="b" required="required" data-lpignore="true" />
+            <label for="comments" data-lpignore="true">Comments:</label>
+            <input type="text" id="js-comments" name="comments" accesskey="o" />
+            <div class="ctr">
+              <button type="submit" name="save" value="save" accesskey="a" id="js-save" class="bottom-left common-events">Save</button>
+              <button type="button" name="clear" value="clear" accesskey="d" id="js-clear" class="bottom-right common-events">Clear</button>
+            </div>
+          </fieldset>
+        </form>
+      </section>
+      <section class="name-choices">
+        <div>
+          <p>Please click on the species you want:</p>
+          <ul id="name-choices"></ul>
+        </div>
+      </section>
+      <section class="display-data">
+        <ul class="common-events" id="js-list"></ul>
+      </section>
+      <section class="contact">
+        <div>
+          <p><span class="left">Developer:</span> <span>Margaret Blauvelt</span></p>
+          <p><span class="left">Email: </span> <span>margaret @ blauvelt dot com</span></p>
+          <p><span class="note-label">NOTE: </span> <span class="note-text">To use the email address above, please remove spaces and replace &quot;dot&quot; with a period. (This is the lazy way to make it more likely that only humans will respond.)</span></p>
+        </div>
+      </section>
+    </main>
+    <footer role="contentinfo">
+      <summary class="p1">© 2017 Margaret Blauvelt</summary>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="jquery-ui/jquery-ui.min.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>

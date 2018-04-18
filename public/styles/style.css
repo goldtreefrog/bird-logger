@@ -1,27 +1,80 @@
+body {
+  background-color: #cbe8c8;
+  box-sizing: border-box; }
+
+section {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(#e7ebf5, #cbe8c8);
+  border-top: solid 1px #e7ebf5; }
+
+section.lead-in p {
+  clear: both; }
+
+section.lead-in div.enter {
+  width: 100%;
+  text-align: center; }
+  section.lead-in div.enter button.enter {
+    width: 80%;
+    font-size: 1.5rem; }
+
+section.lead-in .row-container {
+  width: 100%; }
+  section.lead-in .row-container div.bird-01 {
+    display: block;
+    width: 94%;
+    margin: 25px auto 5px; }
+    section.lead-in .row-container div.bird-01 img.bird-01 {
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 0 20px 5px #5c6b8e; }
+  section.lead-in .row-container h2 {
+    text-align: center;
+    font-size: 2.5rem; }
+  section.lead-in .row-container h3 {
+    margin-left: 5%; }
+  section.lead-in .row-container ul.bird-02 {
+    display: block;
+    vertical-align: top;
+    margin: 0 2%;
+    clear: none;
+    padding: 0 1% 0 10%; }
+    section.lead-in .row-container ul.bird-02 li {
+      margin: 1em 0; }
+  section.lead-in .row-container img.watcher-01 {
+    display: none;
+    float: right;
+    margin: 0 0 5px 5px; }
+
 button,
 h1,
 h2,
 h3 {
-  font-family: "Ubuntu", sans-serif;
-}
+  font-family: "Ubuntu", sans-serif; }
+
+.m0 {
+  margin: 0; }
+
+.p1 {
+  padding: 8px; }
+
+.p2 {
+  padding: 16px; }
+
+button:focus,
+button:hover {
+  color: black;
+  background: none;
+  background-color: #00f947; }
+
+header {
+  background-color: #e7ebf5; }
 
 .app-bar {
   background-color: #082a88;
   color: white;
   margin-bottom: 20px;
-}
-
-.m0 {
-  margin: 0;
-}
-
-.p1 {
-  padding: 8px;
-}
-
-.p2 {
-  padding: 16px;
-}
+  padding-left: 2%; }
 
 button {
   color: white;
@@ -30,93 +83,75 @@ button {
   padding: 5px;
   font-weight: 700;
   border-radius: 15px;
-  box-shadow: 2px 2px 4px #251e11, 2px 2px 4px #887757;
-}
+  box-shadow: 2px 2px 4px #251e11, 2px 2px 4px #887757; }
 
 label {
   display: block;
   width: 100%;
-  margin-left: 4px;
-}
+  margin-left: 4px; }
 
 button.right-col,
 input {
   width: 98%;
   line-height: 1em;
-  margin: 0.25em 1% 0.5em;
-}
+  margin: 0.25em 1% 0.5em; }
 
 input[type="text"] {
-  padding: 2px 1px 1px 4px;
-}
+  padding: 2px 1px 1px 4px; }
 
 div.date input,
 div.time input {
-  max-width: 9em;
-}
+  max-width: 9em; }
 
 fieldset.bird-names .instructions {
   margin: 0;
-  padding: 0;
-}
-
-fieldset.bird-names .instructions .feedback,
-fieldset.bird-names .instructions p {
-  display: block;
-  width: 100%;
-  line-height: 1em;
-  margin: 4px 0;
-  padding: 4px;
-  font-weight: bold;
-}
-
-fieldset.bird-names .instructions .feedback {
-  background-color: #ffaa99;
-  height: 1em;
-  visibility: hidden;
-  text-align: center;
-}
+  padding: 12px 0; }
+  fieldset.bird-names .instructions .feedback,
+  fieldset.bird-names .instructions p {
+    display: block;
+    width: 100%;
+    line-height: 1em;
+    margin: 2px 0;
+    padding: 6px;
+    font-weight: bold; }
+  fieldset.bird-names .instructions .feedback {
+    background-color: #ffaa99;
+    height: 1em;
+    visibility: hidden;
+    text-align: center; }
 
 p.asterisk {
-  margin: 0 0 1em 4px;
-  padding: 0;
-  line-height: 1em;
-}
+  margin: 0 0 1em;
+  padding-left: 2%;
+  line-height: 1em; }
 
 button.right-col {
   clear: both;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 70%;
-}
+  width: 70%; }
 
 .ctr {
-  text-align: center;
-}
-
-.ctr button {
-  display: inline-block;
-  margin: 1.5% 0.5%;
-  width: 70%;
-}
+  text-align: center; }
+  .ctr button {
+    display: inline-block;
+    margin: 1.5% 0.5%;
+    width: 70%; }
 
 nav#navi-h {
   width: 100%;
   text-align: center;
-  padding-bottom: 1px;
-}
-
-nav#navi-h a {
-  margin: 10px 1px;
-  padding: 4px 0.6em 3px 0.8em;
-  color: white;
-  background-color: #082a88;
-  border-top-left-radius: 25px;
-  border-bottom-right-radius: 10px;
-  text-decoration: none;
-  font-size: 1.1rem;
-}
+  padding-bottom: 1px; }
+  nav#navi-h a {
+    margin: 10px 1px;
+    padding: 4px 0.6em 3px 0.8em;
+    color: white;
+    background-color: #082a88;
+    border-top-left-radius: 25px;
+    border-bottom-right-radius: 10px;
+    text-decoration: none;
+    font-size: 1.1rem; }
 
 section.display-data ul {
   list-style-type: none;
@@ -124,268 +159,298 @@ section.display-data ul {
   text-align: center;
   width: 95%;
   margin-left: auto;
-  margin-right: auto;
-}
-
-section.display-data ul .sighting-record {
-  margin: 0 auto 1em;
-  padding: 8px 0;
-  border-bottom: solid 1px gray;
-  text-align: left;
-}
-
-section.display-data ul .sighting-record .sighting-row-2 {
-  width: 100%;
-}
-
-section.display-data ul .sighting-record .sighting-element {
-  text-align: left;
-  display: inline-block;
-  width: 72px;
-  padding-top: 4px;
-  vertical-align: top;
-}
-
-section.display-data ul .sighting-record .sighting-element-buttons {
-  display: block;
-  padding-top: 16px;
-  padding-bottom: 8px;
-  text-align: center;
-}
-
-section.display-data ul .sighting-record .common-name,
-section.display-data ul .sighting-record .scientific-name {
-  word-wrap: break-word;
-}
-
-section.display-data ul .sighting-record .scientific-name {
-  width: 98%;
-}
-
-section.display-data ul .sighting-record .date-sighted {
-  text-align: right;
-}
-
-section.display-data ul .sighting-record .delete,
-section.display-data ul .sighting-record .view {
-  font-size: smaller;
-  margin-left: 8px;
-  margin-right: 8px;
-}
-
-section.display-data ul .sighting-record .view {
-  width: 7em;
-}
+  margin-right: auto; }
+  section.display-data ul .sighting-record {
+    margin: 0 auto 1em;
+    padding: 8px 0;
+    border-bottom: solid 1px gray;
+    text-align: left; }
+    section.display-data ul .sighting-record .sighting-row-2 {
+      width: 100%; }
+    section.display-data ul .sighting-record .sighting-element {
+      text-align: left;
+      display: inline-block;
+      width: 72px;
+      padding-top: 4px;
+      vertical-align: top; }
+    section.display-data ul .sighting-record .sighting-element-buttons {
+      display: block;
+      padding-top: 16px;
+      padding-bottom: 8px;
+      text-align: center; }
+    section.display-data ul .sighting-record .common-name,
+    section.display-data ul .sighting-record .scientific-name {
+      word-wrap: break-word; }
+    section.display-data ul .sighting-record .scientific-name {
+      width: 98%; }
+    section.display-data ul .sighting-record .date-sighted {
+      text-align: right; }
+    section.display-data ul .sighting-record .delete,
+    section.display-data ul .sighting-record .view {
+      font-size: smaller;
+      margin-left: 8px;
+      margin-right: 8px; }
+    section.display-data ul .sighting-record .view {
+      width: 7em; }
 
 section.contact,
 section.display-data,
+section.enter-data,
 section.name-choices {
-  display: none;
-}
+  display: none; }
 
 section.name-choices {
   width: 100%;
-  text-align: center;
-}
-
-section.name-choices div {
-  display: inline-block;
-  text-align: left;
-  width: auto;
-}
+  text-align: center; }
+  section.name-choices div {
+    display: inline-block;
+    text-align: left;
+    width: auto; }
 
 section.contact {
   width: 100%;
+  text-align: center; }
+  section.contact div {
+    display: inline-block;
+    text-align: left;
+    width: auto;
+    margin: 70px 0; }
+    section.contact div p {
+      width: 22em; }
+      section.contact div p span {
+        display: inline-block; }
+      section.contact div p .left,
+      section.contact div p .note-label {
+        width: 6em;
+        text-align: right;
+        margin-right: 1em; }
+      section.contact div p .note-text {
+        max-width: 14em;
+        vertical-align: top; }
+
+footer {
   text-align: center;
-}
-
-section.contact div {
-  display: inline-block;
-  text-align: left;
-  width: auto;
-  margin: 70px 0;
-}
-
-section.contact div p {
-  width: 22em;
-}
-
-section.contact div p span {
-  display: inline-block;
-}
-
-section.contact div p .left,
-section.contact div p .note-label {
-  width: 6em;
-  text-align: right;
-  margin-right: 1em;
-}
-
-section.contact div p .note-text {
-  max-width: 14em;
-  vertical-align: top;
-}
+  font-size: 0.9rem;
+  margin-top: 36px;
+  color: #39383c; }
 
 @media only screen and (min-width: 360px) {
   section.display-data ul .sighting-record .sighting-row-2 {
-    text-align: left;
-  }
+    text-align: left; }
   section.display-data ul .sighting-record .scientific-name {
-    width: 256px;
-  }
-}
+    width: 256px; } }
 
 @media only screen and (min-width: 411px) {
   section.display-data ul .sighting-record {
-    width: 360px;
-  }
-  section.display-data ul .sighting-record .scientific-name {
-    width: 279px;
-  }
-}
+    width: 360px; }
+    section.display-data ul .sighting-record .scientific-name {
+      width: 279px; } }
 
 @media only screen and (min-width: 440px) {
   .ctr {
     clear: both;
-    width: 100%;
-  }
-  .ctr button {
-    width: 48%;
-  }
+    width: 100%; }
+    .ctr button {
+      width: 48%; }
   section.display-data ul .sighting-record {
-    width: 414px;
-  }
-  section.display-data ul .sighting-record .sighting-element {
-    width: 71px;
-  }
-  section.display-data ul .sighting-record .scientific-name {
-    width: 334px;
-  }
+    width: 414px; }
+    section.display-data ul .sighting-record .sighting-element {
+      width: 71px; }
+    section.display-data ul .sighting-record .scientific-name {
+      width: 334px; }
   section.contact div p {
-    width: 26em;
-  }
-  section.contact div p .note-text {
-    max-width: 18em;
-  }
-}
+    width: 26em; }
+    section.contact div p .note-text {
+      max-width: 18em; }
+  section.lead-in p {
+    clear: both; }
+  section.lead-in div.enter {
+    width: 35%;
+    margin: 0 2% 1em 4%; }
+    section.lead-in div.enter button.enter {
+      width: 100%; }
+  section.lead-in .row-container {
+    width: 100%; }
+    section.lead-in .row-container div.bird-01 {
+      padding-bottom: 40px;
+      width: 40%;
+      display: block;
+      float: left;
+      margin: 0 5% 5px 2%; }
+    section.lead-in .row-container h2 {
+      text-align: center;
+      margin-right: 3%;
+      padding: 0.5em 0 0;
+      font-size: 2.5rem; }
+    section.lead-in .row-container h3 {
+      margin-left: 2%; }
+    section.lead-in .row-container ul.bird-02 {
+      display: block;
+      vertical-align: top;
+      margin: 0 2%;
+      clear: none;
+      padding: 0 2em; }
+      section.lead-in .row-container ul.bird-02 li {
+        margin: 1em 0; }
+    section.lead-in .row-container img.watcher-01 {
+      display: block;
+      float: right;
+      width: 50%;
+      margin-left: auto;
+      margin-right: 2%;
+      border-radius: 25px;
+      box-shadow: 0 0 20px 5px #3d5929; } }
 
 @media only screen and (min-width: 628px) {
   .ctr {
     clear: both;
     width: 75%;
-    margin-left: 21%;
-  }
-  .ctr button {
-    width: 48%;
-  }
+    margin-left: 21%; }
+    .ctr button {
+      width: 48%; }
   label {
     clear: left;
     float: left;
     width: 20%;
     text-align: right;
-    margin: 8px 1% 8px 0;
-  }
+    margin: 8px 1% 8px 0; }
   button.right-col,
   form p,
   input {
     clear: both;
     width: 75%;
-    margin: 8px 0 8px 1%;
-  }
+    margin: 8px 0 8px 1%; }
   label.time {
     float: left;
-    clear: both;
-  }
+    clear: both; }
   button.right-col {
-    margin-left: 22%;
-  }
+    margin-left: 22%; }
   section.contact div p {
-    width: 35em;
-  }
-  section.contact div p .note-text {
-    max-width: 27em;
-  }
-}
+    width: 35em; }
+    section.contact div p .note-text {
+      max-width: 27em; }
+  section.lead-in p {
+    clear: both; }
+  section.lead-in div.enter {
+    width: 37%;
+    margin: inherit auto; }
+  section.lead-in .row-container {
+    width: 100%; }
+    section.lead-in .row-container div.bird-01 {
+      width: 30%;
+      margin: 0 8% 5px;
+      padding-bottom: 20px; }
+    section.lead-in .row-container h2 {
+      text-align: center;
+      margin-right: 0;
+      padding: 0.5em 0 0;
+      font-size: 2.5rem; }
+    section.lead-in .row-container h3 {
+      margin-left: 4%; }
+    section.lead-in .row-container ul.bird-02 {
+      display: block;
+      vertical-align: top;
+      margin: 0 7%;
+      clear: none; }
+    section.lead-in .row-container img.watcher-01 {
+      display: block;
+      float: right;
+      width: 37.5%;
+      margin-left: auto;
+      margin-right: 8%;
+      border-radius: 25px;
+      box-shadow: 0 0 20px 5px #3d5929; } }
 
 @media only screen and (min-width: 900px) {
   body {
-    width: 100%;
-  }
+    width: 100%; }
   nav li {
     width: 95%;
     vertical-align: top;
-    height: 2.5em;
-  }
-  nav li a {
-    display: inline-block;
-    border: none;
-    height: 2.5em;
-  }
-  nav li span {
-    display: inline-block;
-    clear: none;
-    width: auto;
-  }
+    height: 2.5em; }
+    nav li a {
+      display: inline-block;
+      border: none;
+      height: 2.5em; }
+    nav li span {
+      display: inline-block;
+      clear: none;
+      width: auto; }
   fieldset.bird-names .instructions .feedback {
     display: inline-block;
     width: auto;
     min-width: 55%;
-    float: right;
-  }
+    float: right; }
   fieldset.bird-names .instructions p {
     display: inline-block;
-    width: 20em;
-  }
+    width: 20em; }
   label {
     float: left;
-    clear: left;
-  }
+    clear: left; }
   input {
     clear: right;
     float: left;
-    width: 57%;
-  }
+    width: 57%; }
   button.right-col {
     display: block;
     clear: right;
     margin-left: 2%;
     float: left;
-    width: 17%;
-  }
+    width: 17%; }
   .ctr {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    text-align: center;
-  }
-  .ctr button {
-    display: inline-block;
-    float: none;
-    margin-left: 0.5%;
-    margin-right: 0.5%;
-    width: 17%;
-  }
-  .ctr .bottom-left {
-    margin-right: 2%;
-  }
-  .ctr .bottom-right {
-    margin-left: 2%;
-  }
+    text-align: center; }
+    .ctr button {
+      display: inline-block;
+      float: none;
+      margin-left: 0.5%;
+      margin-right: 0.5%;
+      width: 17%; }
+    .ctr .bottom-left {
+      margin-right: 2%; }
+    .ctr .bottom-right {
+      margin-left: 2%; }
   section.display-data ul {
-    padding-left: 10px;
-  }
-  section.display-data ul .sighting-record {
-    width: 700px;
-  }
-  section.display-data ul .sighting-record .sighting-element {
-    vertical-align: middle;
-  }
-  section.display-data ul .sighting-record .sighting-element-buttons {
-    display: inline-block;
-    margin: 0 2px 0 90px;
-    padding: 0;
-    text-align: center;
-  }
-}
+    padding-left: 10px; }
+    section.display-data ul .sighting-record {
+      width: 700px; }
+      section.display-data ul .sighting-record .sighting-element {
+        vertical-align: middle; }
+      section.display-data ul .sighting-record .sighting-element-buttons {
+        display: inline-block;
+        margin: 0 2px 0 90px;
+        padding: 0;
+        text-align: center; }
+  section.lead-in p {
+    clear: both; }
+  section.lead-in div.enter {
+    width: 38%; }
+    section.lead-in div.enter button.enter {
+      width: 80%; }
+  section.lead-in .row-container {
+    width: 100%; }
+    section.lead-in .row-container div.bird-01 {
+      width: 30%;
+      margin: 0 8% 5px; }
+    section.lead-in .row-container h2 {
+      text-align: center;
+      margin-right: 0;
+      margin-bottom: 40px;
+      padding: 0.5em 0 0;
+      font-size: 2.5rem; }
+    section.lead-in .row-container ul.bird-02 {
+      display: block;
+      vertical-align: top;
+      clear: none; }
+    section.lead-in .row-container img.watcher-01 {
+      display: block;
+      float: right;
+      width: 37.5%;
+      margin-left: auto;
+      margin-right: 8%;
+      border-radius: 25px;
+      box-shadow: 0 0 20px 5px #3d5929; } }
 
 /*# sourceMappingURL=style.css.map */

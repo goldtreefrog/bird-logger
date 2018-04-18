@@ -18,6 +18,9 @@ const app = express();
 // HTML will name the path like this: <script src="jquery-ui/jquery-ui.min.js">
 app.use("/jquery-ui", express.static(__dirname + /jquery-ui-1.12.1.custom/));
 
+// Serve images folder. HTML will name the path to a file: "/images/[file]"
+app.use("/images", express.static(__dirname + /images/));
+
 // Log all requests
 app.all("/", logRequest);
 
